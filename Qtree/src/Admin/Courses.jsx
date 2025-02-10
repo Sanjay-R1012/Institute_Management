@@ -1,7 +1,10 @@
 import React from 'react'
+import Navbar from '../Navbar'
 
 const Courses = () => {
   return (
+    <div>
+    <Navbar />
 <div className='students-list'>
     <table className='student-table'>
         <thead>
@@ -24,6 +27,7 @@ const Courses = () => {
         </tbody>
     </table>
 
+    </div>
     </div>
   )
 }

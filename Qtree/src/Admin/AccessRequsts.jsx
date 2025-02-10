@@ -1,7 +1,10 @@
 import React from 'react'
+import Navbar from '../Navbar'
 
 const AccessRequsts = () => {
   return (
+    <div>
+      <Navbar />
     <div className='students-list'>
     <table className='student-table'>
         <thead>
@@ -26,6 +29,7 @@ const AccessRequsts = () => {
         </tbody>
     </table>
 
+    </div>
     </div>
   )
 }

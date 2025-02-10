@@ -1,18 +1,23 @@
 import React from 'react'
 import './index.css'
+import { NavLink } from 'react-router-dom'
 
 const Navbar = () => {
+  const admin =<div>
+              <ul>
+            <NavLink className={'nav-link'} to={'/admin/students/'}>Students</NavLink>
+            <NavLink className={'nav-link'} to={'/admin/staffs/'}>Staffs</NavLink>
+            <NavLink className={'nav-link'} to={'/admin/courses/'}>Courses</NavLink>
+            <NavLink className={'nav-link'} to={'/admin/request/'}>Waiting</NavLink>
+            <NavLink className={'nav-link'} to={'/staff/classes/'}>Class</NavLink>
+            <NavLink className={'nav-link'} to={'/student/data/'}>Sdata</NavLink>
+          </ul>
+  </div>
   return (
     <div className='side-nav'>
         <img className='logo' src="https://www.qtreetechnologies.in/assets/frontend/img/logo-dark.png" alt="Qtree logo" />
         <div className="navbar">
-          <ul>
-            <li className='nav-item'><a href="">Home</a></li>
-            <li className='nav-item'><a href="">Students</a></li>
-            <li className='nav-item'><a href="">Staffs</a></li>
-            <li className='nav-item'><a href="">Courses</a></li>
-            <li className='nav-item'><a href="">Waiting</a></li>
-          </ul>
+          {admin}
         </div> 
         <button className='logout'>Log out</button>
     </div>

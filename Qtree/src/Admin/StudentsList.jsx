@@ -1,7 +1,10 @@
 import React from 'react'
+import Navbar from '../Navbar'
 
 const StudentsList = () => {
   return (
+    <div>
+        <Navbar />
     <div className='students-list'>
         <table className='student-table'>
             <thead>
@@ -13,6 +16,7 @@ const StudentsList = () => {
                 <th>batch No</th>
                 <th>Classes Finished</th>
                 <th>Current staff</th>
+                <th>More Data</th>
             </tr>
             </thead>
             <tbody>
@@ -24,6 +28,7 @@ const StudentsList = () => {
                     <td>50</td>
                     <td>26</td>
                     <td>kishore</td>
+                    <td><button>view</button></td>
                 </tr>
                 <tr>
                     <td>sanjay</td>
@@ -33,6 +38,7 @@ const StudentsList = () => {
                     <td>50</td>
                     <td>26</td>
                     <td>kishore</td>
+                    <td><button>view</button></td>
                 </tr>
                 <tr>
                     <td>sanjay</td>
@@ -42,9 +48,11 @@ const StudentsList = () => {
                     <td>50</td>
                     <td>26</td>
                     <td>kishore</td>
+                    <td><button>view</button></td>
                 </tr>
             </tbody>
         </table>
+    </div>
     </div>
   )
 }

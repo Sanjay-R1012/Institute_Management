@@ -1,17 +1,21 @@
 import React from 'react'
 import Navbar from '../Navbar'
+import { useNavigate } from 'react-router-dom'
 
 const StudentsList = () => {
+    const navigate =useNavigate()
   return (
     <div>
         <Navbar />
     <div className='students-list'>
+        <button className='btn' onClick={() =>navigate('/admin/students/add/')}>Add Student</button>
         <table className='student-table'>
             <thead>
             <tr>
                 <th>Student Name</th>
                 <th>Student id</th>
                 <th>Course Name</th>
+                <th>Email</th>
                 <th>Enrolled Date</th>
                 <th>batch No</th>
                 <th>Classes Finished</th>
@@ -24,6 +28,7 @@ const StudentsList = () => {
                     <td>sanjay</td>
                     <td>g5we565q</td>
                     <td>mern stack</td>
+                    <td>sanjay@gmail.com</td>
                     <td>14-10-2024</td>
                     <td>50</td>
                     <td>26</td>
@@ -34,6 +39,7 @@ const StudentsList = () => {
                     <td>sanjay</td>
                     <td>g5we565q</td>
                     <td>mern stack</td>
+                    <td>sanjay@gmail.com</td>
                     <td>14-10-2024</td>
                     <td>50</td>
                     <td>26</td>
@@ -44,6 +50,7 @@ const StudentsList = () => {
                     <td>sanjay</td>
                     <td>g5we565q</td>
                     <td>mern stack</td>
+                    <td>sanjay@gmail.com</td>
                     <td>14-10-2024</td>
                     <td>50</td>
                     <td>26</td>

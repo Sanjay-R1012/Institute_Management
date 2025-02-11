@@ -1,11 +1,14 @@
 import React from 'react'
 import Navbar from '../Navbar'
+import { useNavigate } from 'react-router-dom'
 
 const StaffsList = () => {
+    const navigate =useNavigate()
   return (
     <div>
         <Navbar />
         <div className='students-list'>
+        <button className='btn' onClick={() =>navigate('/admin/staffs/add/')}>Add Staff</button>
         <table className='student-table'>
             <thead>
             <tr>

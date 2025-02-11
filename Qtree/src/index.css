@@ -105,7 +105,7 @@
 }
 
 .addform {
-    width: 400px;
+    width: 500px;
     min-height: 400px;
     border-radius: 6px;
     background-color: aliceblue;
@@ -113,15 +113,13 @@
 }
 
 .formgroup {
-    height: 60px;
+    min-height: 60px;
     margin-bottom: 10px;
     position: relative;
 }
 
 .form-input{
-    position: absolute;
-    top: 0;
-    left: 0;
+
     width: 100%;
     background: none;
     border: 1px solid #a1a1a1;
@@ -185,4 +183,9 @@
     font-weight: bold;
     width: 10vw;
     border-radius: 5px;
+}
+
+.para-input{
+    height: 70px;
+    resize: none;
 }

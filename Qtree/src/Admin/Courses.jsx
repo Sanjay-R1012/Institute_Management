@@ -8,7 +8,7 @@ const Courses = () => {
     <div>
     <Navbar />
 <div className='students-list'>
-<button className='btn' onClick={() =>navigate('/admin/courses/add/')}>Add Student</button>
+<button className='btn' onClick={() =>navigate('/admin/courses/add/')}>Add Course</button>
     <table className='student-table'>
         <thead>
         <tr>

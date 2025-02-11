@@ -21,7 +21,7 @@ const AddStudent = () => {
     classtype,
     batchno,
     staff,
-    classtime,})
+    classtime})
   }
 
   const clear =() =>{
@@ -53,7 +53,7 @@ const AddStudent = () => {
             </div>
             
             <div className="formgroup">
-            <input type="text" id='enroll-date' className='form-input' value={enrolldate} onChange={event =>(setEnrolldate(event.target.value))} required/>
+            <input  type="date" id='enroll-date' className='form-input' value={enrolldate} onChange={event =>(setEnrolldate(event.target.value))} required/>
             <label htmlFor="enroll-date" className='form-label'>Date of Enroll</label>
             </div>
 

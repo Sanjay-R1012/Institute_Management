@@ -3,6 +3,7 @@ import { config } from 'dotenv'
 import { connect } from 'mongoose'
 import cors from 'cors'
 import CourseRouter from './Course/courseController.js'
+import StaffRouter from './Staff/staffController.js'
 
 const app = express()
 app.use(express.json())
@@ -10,6 +11,7 @@ app.use(cors())
 config()
 
 app.use('/course/',CourseRouter)
+app.use('/staff/',StaffRouter)
 
 const Start = async () => {
 

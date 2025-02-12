@@ -105,7 +105,7 @@
 }
 
 .addform {
-    width: 500px;
+    width: 600px;
     min-height: 400px;
     border-radius: 6px;
     background-color: aliceblue;
@@ -114,6 +114,7 @@
 
 .formgroup {
     min-height: 60px;
+    max-height: 200px;
     margin-bottom: 10px;
     position: relative;
 }
@@ -188,4 +189,10 @@
 .para-input{
     height: 70px;
     resize: none;
+}
+
+.form-label-check{
+    display: block;
+    color: darkblue;
+    font-weight: 400;
 }

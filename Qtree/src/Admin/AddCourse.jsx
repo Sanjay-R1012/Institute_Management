@@ -1,20 +1,25 @@
 import React from 'react'
 import { useState } from 'react'
+import axios from 'axios'
 
 const AddCourse = () => {
   const [coursename,setCourseName]=useState('')
   const [duration,setDuration]=useState('')
-  const [tools,setTools]=useState('')
-  const [proglang,setProglang]=useState('')
+  const [tools,setTools]=useState([])
+  const [proglang,setProglang]=useState([])
   const [syllabus,setSyllabus]=useState('')
 
-  const submit =() => {
-    console.log({
-    coursename,
-    duration,
-    tools,
-    proglang,
-    syllabus})
+  const createcourse =() => {
+    const new_course={
+    'course_name':coursename,
+    'duration':duration,
+    'tools':tools,
+    'prog_lang':proglang,
+    'syllabus':syllabus}
+
+    axios.post('http://127.0.0.1:3000/course/add/', new_course)
+    .then(response => console.log(response.data))
+    .catch(error => console.log(error))
   }
 
   const clear =() =>{
@@ -25,6 +30,97 @@ const AddCourse = () => {
     setSyllabus('')
   }
 
+
+  const toolslist = ["Visual Studio Code",
+    "Sublime Text ",
+    "UltraEdit",
+    "JetBrains IDEs",
+    "Eclipse IDE",
+    "Git",
+    "GitHub",
+    "GitLab",
+    "Bitbucket",
+    "GitHub Copilot",
+    "Codeium",
+    "Jira",
+    "Axure",
+    "Jenkins",
+    "Docker",
+    "Kubernetes",
+    "Node.js",
+    "Bootstrap",
+    "Firebase",
+    "Linx",
+    "SendBird",
+    "MySQL Workbench",
+    "Postman",
+    "Dynatrace",
+    "AWS",
+    "Azure",
+    "Bonus tool: Spacelift"]
+
+    const programmingLanguages = [
+      "JavaScript",
+      "Python",
+      "Java",
+      "C++",
+      "C#",
+      "Ruby",
+      "Go",
+      "TypeScript",
+      "Swift",
+      "Kotlin",
+      "Rust",
+      "PHP",
+      "R",
+      "Scala",
+      "Perl",
+      "Dart",
+      "Elixir",
+      "Haskell",
+      "Lua",
+      "Objective-C",
+      "Shell",
+      "SQL",
+      "HTML/CSS",
+    ]
+
+    const handletoolCheckboxChange = (event) => {
+      const { value, checked } = event.target;
+  
+      if (checked) {
+        setTools([...tools, value]);
+      } else {
+        setTools(tools.filter((item) => item !== value));
+      }
+    }
+
+    const handleproglangCheckboxChange = (event) => {
+      const { value, checked } = event.target;
+  
+      if (checked) {
+        setProglang([...proglang, value]);
+      } else {
+        setProglang(proglang.filter((item) => item !== value));
+      }
+    }
+
+    const tooloptions =toolslist.map((item, index) => (
+      <div key={index} className="form-check form-check-inline">
+        <label className="form-check-label">
+          <input  className="form-check-input" type="checkbox" onChange={handletoolCheckboxChange}  checked={tools.includes(item)}  name={item} value={item}  />
+          {item}
+          </label>
+        </div>))
+
+    const proglangoptions =programmingLanguages.map((item, index) => (
+      <div key={index} className="form-check form-check-inline">
+        <label className="form-check-label">
+          <input  className="form-check-input" type="checkbox" onChange={handleproglangCheckboxChange}  checked={proglang.includes(item)}  name={item} value={item}  />
+          {item}
+          </label>
+        </div>))
+    
 
   return (
     <div className='box'>
@@ -40,14 +136,14 @@ const AddCourse = () => {
         <label htmlFor="duration" className='form-label'>Course Duration</label>
         </div>
 
-        <div className="formgroup">
-        <textarea  id='tools' className='form-input para-input' value={tools} onChange={event =>(setTools(event.target.value))} required/>
-        <label htmlFor="tools" className='form-label' >Tools Covered</label>
+        <div className="formgroup ">
+        <label htmlFor="tools" className='form-label-check' >Tools Covered</label>
+        {tooloptions}
         </div>
 
         <div className="formgroup">
-        <textarea id='plang' className='form-input para-input' value={proglang} onChange={event =>(setProglang(event.target.value))} required/>
-        <label htmlFor="plang" className='form-label'>Programming Languages</label>
+        <label htmlFor="plang" className='form-label-check'>Programming Languages</label>
+        {proglangoptions}
         </div>
 
         <div className="formgroup">
@@ -56,7 +152,7 @@ const AddCourse = () => {
         </div>
 
         <div className="bottom-box">
-            <button className='form-button' type='submit' onClick={submit}>Add</button>
+            <button className='form-button'  onClick={createcourse}>Add</button>
             <button className='form-button' onClick={clear}>clear</button>
         </div>
     </form>

@@ -1,30 +1,46 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { useState } from 'react'
+import axios from 'axios'
 
 const AddStaff = () => {
 
    const [staffname,setStaffName]=useState('')
-    const [coursename,setCourseName]=useState('')
+    const [handlingcourse,setHandlingcourse]=useState('')
+    const [courses,setCourses]=useState([])
     const [joiningdate,setJoiningdate]=useState('')
     const [email,setEmail]=useState('')
     const [password,setpassword]=useState('')
     const [classtype,setClasstype]=useState('')
     const [classroomno,setClassroomno]=useState('')
+
+    useEffect(() => {
+      axios.get('http://127.0.0.1:3000/course/data/')
+      .then(response => { 
+        setCourses(response.data)
+        console.log(response.data)
+      })
+      .catch(error => console.log(error))
+    },[])
+
   
     const submit =() => {
-      console.log({
-      staffname,
-      coursename,
-      joiningdate,
-      email,
-      password,
-      classtype,
-      classroomno})
+      const new_staff = {
+        'staffname' : staffname,
+        "handlingcourse" : handlingcourse,
+        "joiningdate" : joiningdate,
+        "email" : email,
+        "password" : password,
+        "classtype" : classtype,
+        "classroomno":classroomno}
+
+        axios.post('http://127.0.0.1:3000/staff/add/',new_staff)
+        .then(response => console.log(response.data))
+        .catch((error) => console.log(error))
     }
   
     const clear =() =>{
       setStaffName('')
-      setCourseName('')
+      setHandlingcourse('')
       setJoiningdate('')
       setEmail('')
       setpassword('')
@@ -32,6 +48,7 @@ const AddStaff = () => {
       setClassroomno('')
     }
 
+    const courseoption = courses.map(course =><option key={course._id} value={course._id}>{course.course_name}</option>)
 
   return (
     <div className='box'>
@@ -43,13 +60,15 @@ const AddStaff = () => {
             </div>
 
             <div className="formgroup">
-            <input type="text" id='course' className='form-input' value={coursename} onChange={event =>(setCourseName(event.target.value))} required/>
-            <label htmlFor="course" className='form-label'>Handling Course Name</label>
+            <label htmlFor="course" className='form-label-check'>Handling Course Name</label>
+            <select className="form-select" aria-label="Default select example" onChange={event => setHandlingcourse(event.target.value)}>
+              {courseoption}
+            </select>
             </div>
             
             <div className="formgroup">
+            <label htmlFor="joining-date" className='form-label-check'>Date of Joining</label>
             <input  type="date" id='joining-date' className='form-input' value={joiningdate} onChange={event =>(setJoiningdate(event.target.value))} required/>
-            <label htmlFor="joining-date" className='form-label'>Date of Joining</label>
             </div>
 
             <div className="formgroup">

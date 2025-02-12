@@ -4,8 +4,8 @@ const CourseSchema = mongoose.Schema({
 
     course_name : String,
     duration : String,
-    tools :String,
-    prog_lang : String,
+    tools :Array,
+    prog_lang : Array,
     syllabus : String
 })
 

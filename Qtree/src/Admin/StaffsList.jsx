@@ -1,9 +1,62 @@
 import React from 'react'
 import Navbar from '../Navbar'
+import axios from 'axios'
+import { useState,useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 
 const StaffsList = () => {
     const navigate =useNavigate()
+
+    const[courselist,SetCourselist]=useState([])
+    const[stafflist,SetStafflist]=useState([])
+    const[studentlist,setStudentlist]=useState([])
+
+    useEffect(() =>{
+        axios.get('http://127.0.0.1:3000/course/data/')
+            .then(response =>{ SetCourselist(response.data)
+                console.log(response.data)
+            })
+            .catch(error => console.log(error))
+
+        axios.get('http://127.0.0.1:3000/staff/data/')
+        .then(response => { 
+            SetStafflist(response.data)
+             console.log(response.data)
+        })
+        .catch(error => console.log(error))
+
+        axios.get('http://127.0.0.1:3000/student/data/')
+        .then(response => { 
+            setStudentlist(response.data)
+             console.log(response.data)
+        })
+        .catch(error => console.log(error))
+    },[])
+
+    const staffdata = stafflist.map(staff => {
+
+        const Course = courselist.filter(
+            (course) => staff.handlingcourse === course._id
+          )
+
+
+        const Students = studentlist.filter(
+            (student) => student.staff === staff._id
+          )
+
+
+        return(
+            <tr key={staff._id}>
+                <td>{staff.staffname}</td>
+                <td>{Course[0].course_name}</td>
+                <td>{staff.joiningdate}</td>
+                <td>{Students.length}</td>
+                <td><button>view</button></td>
+            </tr>
+        )
+    })
+
+
   return (
     <div>
         <Navbar />
@@ -13,22 +66,14 @@ const StaffsList = () => {
             <thead>
             <tr>
                 <th>staff Name</th>
-                <th>staff id</th>
-                <th>Course </th>
+                <th>Course</th>
                 <th>Joined Date </th>
-                <th>batches Finished</th>
+                <th>students count</th>
                 <th>More Data</th>
             </tr>
             </thead>
             <tbody>
-                <tr>
-                    <td>sanjay</td>
-                    <td>g5we565q</td>
-                    <td>mern stack</td>
-                    <td>14-10-2024</td>
-                    <td>50</td>
-                    <td><button>View</button></td>
-                </tr>
+               {staffdata}
             </tbody>
         </table>
     </div>

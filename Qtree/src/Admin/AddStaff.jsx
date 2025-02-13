@@ -1,8 +1,11 @@
 import React, { useEffect } from 'react'
 import { useState } from 'react'
 import axios from 'axios'
+import { useNavigate } from 'react-router-dom'
 
 const AddStaff = () => {
+
+  const navigate =useNavigate()
 
    const [staffname,setStaffName]=useState('')
     const [handlingcourse,setHandlingcourse]=useState('')
@@ -11,7 +14,6 @@ const AddStaff = () => {
     const [email,setEmail]=useState('')
     const [password,setpassword]=useState('')
     const [classtype,setClasstype]=useState('')
-    const [classroomno,setClassroomno]=useState('')
 
     useEffect(() => {
       axios.get('http://127.0.0.1:3000/course/data/')
@@ -30,12 +32,13 @@ const AddStaff = () => {
         "joiningdate" : joiningdate,
         "email" : email,
         "password" : password,
-        "classtype" : classtype,
-        "classroomno":classroomno}
+        "classtype" : classtype}
 
         axios.post('http://127.0.0.1:3000/staff/add/',new_staff)
         .then(response => console.log(response.data))
         .catch((error) => console.log(error))
+
+        navigate('/admin/Staffs/')
     }
   
     const clear =() =>{
@@ -45,7 +48,6 @@ const AddStaff = () => {
       setEmail('')
       setpassword('')
       setClasstype('')
-      setClassroomno('')
     }
 
     const courseoption = courses.map(course =><option key={course._id} value={course._id}>{course.course_name}</option>)
@@ -62,6 +64,7 @@ const AddStaff = () => {
             <div className="formgroup">
             <label htmlFor="course" className='form-label-check'>Handling Course Name</label>
             <select className="form-select" aria-label="Default select example" onChange={event => setHandlingcourse(event.target.value)}>
+            <option value="0" selected>select</option>
               {courseoption}
             </select>
             </div>
@@ -82,14 +85,14 @@ const AddStaff = () => {
             </div>
 
             <div className="formgroup">
-            <input type="text" id='type' className='form-input' value={classtype} onChange={event =>(setClasstype(event.target.value))} required/>
-            <label htmlFor="type" className='form-label'>online or offline</label>
+            <label htmlFor="type" className='form-label-check'>online or offline</label>
+            <select className="form-select" aria-label="Default select example" onChange={event => setClasstype(event.target.value)}>
+            <option value="0" selected>select</option>
+              <option value="online">Online</option>
+              <option value="offline">Offline</option>
+            </select>
             </div>
 
-            <div className="formgroup">
-            <input type="text" id='classno' className='form-input' value={classroomno} onChange={event =>(setClassroomno(event.target.value))} required/>
-            <label htmlFor="classno" className='form-label'>Assign classroom</label>
-            </div>
 
             <div className="bottom-box">
                 <button className='form-button' type='submit' onClick={submit}>Add</button>

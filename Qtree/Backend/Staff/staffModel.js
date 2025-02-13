@@ -7,8 +7,7 @@ const StaffSchema = mongoose.Schema({
       joiningdate : String,
       email : String,
       password : String,
-      classtype : String,
-      classroomno:String
+      classtype : String
 })
 
 export const Staff = mongoose.model('staff', StaffSchema)

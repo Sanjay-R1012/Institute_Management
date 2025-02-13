@@ -1,8 +1,11 @@
 import React from 'react'
 import { useState } from 'react'
 import axios from 'axios'
+import { useNavigate } from 'react-router-dom'
 
 const AddCourse = () => {
+  const navigate =useNavigate()
+
   const [coursename,setCourseName]=useState('')
   const [duration,setDuration]=useState('')
   const [tools,setTools]=useState([])
@@ -20,6 +23,8 @@ const AddCourse = () => {
     axios.post('http://127.0.0.1:3000/course/add/', new_course)
     .then(response => console.log(response.data))
     .catch(error => console.log(error))
+
+    navigate('admin/courses/')
   }
 
   const clear =() =>{

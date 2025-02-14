@@ -18,6 +18,7 @@ const CreateBatch = () => {
 
       const [selectedStudents, setSelectedStudents] = useState([])
       const [selectedTimeRange, setSelectedTimeRange] = useState("")
+      const [batchlist, SetBatchlist] = useState([]);
 
   
       useEffect(() =>{
@@ -40,6 +41,13 @@ const CreateBatch = () => {
                console.log(response.data)
           })
           .catch(error => console.log(error))
+
+          axios.get('http://127.0.0.1:3000/batch/data/')
+        .then(response => { 
+            SetBatchlist(response.data)
+             console.log(response.data)
+        })
+        .catch(error => console.log(error))
       },[])
 
       const courseoption = courselist.map(course =><option key={course._id} value={course._id}>{course.course_name}</option>)
@@ -99,13 +107,30 @@ const CreateBatch = () => {
           return timeRanges
         }
       
-        // Time ranges array
-        const timeRanges = generateTimeRanges()
       
-        // Function to handle time range selection
-        const handleTimeRangeChange = (event) => {
-          setSelectedTimeRange(event.target.value);
-        };
+     const [availableTimeRanges, setAvailableTimeRanges] = useState(generateTimeRanges());
+
+  const handleStaffChange = (event) => {
+    const staffId = event.target.value;
+    SetStaff(staffId);
+
+    // Filter out time ranges already assigned to the selected staff
+    const assignedTimeRanges = batchlist
+      .filter((batch) => batch.staff === staffId)
+      .map((batch) => batch.selectedtimerange);
+
+    const allTimeRanges = generateTimeRanges();
+    const filteredTimeRanges = allTimeRanges.filter(
+      (timeRange) => !assignedTimeRanges.includes(timeRange)
+    );
+
+    setAvailableTimeRanges(filteredTimeRanges);
+    setSelectedTimeRange(""); // Reset selected time range
+  };
+
+  const handleTimeRangeChange = (event) => {
+    setSelectedTimeRange(event.target.value);
+  };
 
       const handleCheckboxChange = (event, studentId) => {
         const { checked } = event.target;
@@ -127,11 +152,6 @@ const CreateBatch = () => {
         </div>
       ))
 
-      const timeoptions = timeRanges.map((timeRange, index) => (
-          <option key={index} value={timeRange}>
-            {timeRange}
-          </option>
-        ))
 
 
   return (
@@ -153,7 +173,7 @@ const CreateBatch = () => {
             
             <div className="formgroup">
             <label htmlFor="staff" className='form-label-check'>Staff</label>
-            <select className="form-select" aria-label="Default select example"   onChange={event => SetStaff(event.target.value)}>
+            <select className="form-select" aria-label="Default select example"   onChange={handleStaffChange}>
             <option value="0" >select</option>
               {staffoption}
             </select>
@@ -166,10 +186,14 @@ const CreateBatch = () => {
 
             <div className="formgroup">
             <label htmlFor="classtime" className='form-label-check'>Class Time</label>
-            <select className="form-select" id="time-range-select" value={selectedTimeRange} onChange={handleTimeRangeChange}>
-            <option value="">-- Select a time range --</option>
-            {timeoptions}
-            </select>
+            <select id="timeRange" className="form-select" aria-label="Default select example" onChange={handleTimeRangeChange} value={selectedTimeRange} disabled={!staff}>
+              <option value="">Select a time range</option>
+              {availableTimeRanges.map((timeRange, index) => (
+                <option key={index} value={timeRange}>
+                  {timeRange}
+                </option>
+              ))}
+        </select>
            </div>
 
             <div className="formgroup">

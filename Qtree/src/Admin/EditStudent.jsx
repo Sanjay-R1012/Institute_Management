@@ -22,7 +22,6 @@ const EditStudent = () => {
   const [email, setEmail] = useState(student_data.email);
   const [password, setpassword] = useState(student_data.password);
   const [classtype, setClasstype] = useState(student_data.classtype);
-  const [batchno, setBatchno] = useState(student_data.batchno);
   const [staff, SetStaff] = useState(student_data.staff);
   const [staffslist, SetStafflist] = useState([]);
   const [courselist, SetCourselist] = useState([]);
@@ -61,7 +60,6 @@ const EditStudent = () => {
       email: email,
       password: password,
       classtype: classtype,
-      batchno: batchno,
       staff: staff,
     };
 
@@ -90,13 +88,6 @@ const EditStudent = () => {
     );
   });
 
-  const batchoption =batchlist.map((batch) => {
-    return(
-        <option key={batch._id} value={batch._id}>
-          {batch.batchno}
-        </option>
-    )
-  })
 
   return (
     <div className="box">
@@ -182,15 +173,6 @@ const EditStudent = () => {
           </select>
         </div>
 
-        <div className="formgroup">
-          <label htmlFor="batchno" className="form-label-check">Batch No</label>
-          <select
-            className="form-select"
-            aria-label="Default select example"
-            onChange={(event) => setBatchno(event.target.value)}>
-            {batchoption}
-          </select>
-        </div>
 
         <div className="formgroup">
           <label htmlFor="staff" className="form-label-check">Staff</label>

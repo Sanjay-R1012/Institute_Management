@@ -12,7 +12,6 @@ const AddStudent = () => {
   const [email, setEmail] = useState("");
   const [password, setpassword] = useState("");
   const [classtype, setClasstype] = useState("");
-  const [batchno, setBatchno] = useState("");
   const [staff, SetStaff] = useState("");
   const [staffslist, SetStafflist] = useState([]);
   const [courselist, SetCourselist] = useState([]);
@@ -51,7 +50,6 @@ const AddStudent = () => {
       email: email,
       password: password,
       classtype: classtype,
-      batchno: batchno,
       staff: staff,
     };
 
@@ -90,13 +88,6 @@ const AddStudent = () => {
     );
   });
 
-  const batchoption =batchlist.map((batch) => {
-    return(
-        <option key={batch._id} value={batch._id}>
-          {batch.batchno}
-        </option>
-    )
-  })
 
   return (
     <div className="box">
@@ -187,17 +178,6 @@ const AddStudent = () => {
             </option>
             <option value="online">Online</option>
             <option value="offline">Offline</option>
-          </select>
-        </div>
-
-        <div className="formgroup">
-          <label htmlFor="batchno" className="form-label-check">Batch No</label>
-          <select
-            className="form-select"
-            aria-label="Default select example"
-            onChange={(event) => setBatchno(event.target.value)}>
-            <option value="0">select</option>
-            {batchoption}
           </select>
         </div>
 

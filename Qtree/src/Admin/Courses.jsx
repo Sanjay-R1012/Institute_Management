@@ -47,7 +47,9 @@ const Courses = () => {
                 <td>{Staffs.length}</td>
                 <td>{course.duration}</td>
                 <td>{Students.length}</td>
-                <td><button>view</button></td>
+                <td>
+                    <button onClick={() => navigate(`/admin/course/edit/${course._id}/`, { state: course})}>Edit</button>
+                </td>
             </tr>
         )
     })

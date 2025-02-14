@@ -1,19 +1,29 @@
-import React, { useEffect } from 'react'
-import { useState } from 'react'
+import React, { useState,useEffect } from 'react'
+import { useLocation } from 'react-router-dom'
 import axios from 'axios'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 
-const AddStaff = () => {
 
-  const navigate =useNavigate()
+const EditStaff = () => {
+        const navigate = useNavigate()
+    
+        const params = useParams()
+    
+        const {id} = params
+    
+        const location = useLocation()
+    
+        const staff_data = location.state
+    
+        console.log(staff_data)
 
-    const [staffname,setStaffName]=useState('')
-    const [handlingcourse,setHandlingcourse]=useState('')
+    const [staffname,setStaffName]=useState(staff_data.staffname)
+    const [handlingcourse,setHandlingcourse]=useState(staff_data.handlingcourse)
     const [courses,setCourses]=useState([])
-    const [joiningdate,setJoiningdate]=useState('')
-    const [email,setEmail]=useState('')
-    const [password,setpassword]=useState('')
-    const [classtype,setClasstype]=useState('')
+    const [joiningdate,setJoiningdate]=useState(staff_data.joiningdate)
+    const [email,setEmail]=useState(staff_data.email)
+    const [password,setpassword]=useState(staff_data.password)
+    const [classtype,setClasstype]=useState(staff_data.classtype)
 
     useEffect(() => {
       axios.get('http://127.0.0.1:3000/course/data/')
@@ -25,8 +35,8 @@ const AddStaff = () => {
     },[])
 
   
-    const submit =() => {
-      const new_staff = {
+    const update =() => {
+      const update_staff = {
         'staffname' : staffname,
         "handlingcourse" : handlingcourse,
         "joiningdate" : joiningdate,
@@ -34,20 +44,12 @@ const AddStaff = () => {
         "password" : password,
         "classtype" : classtype}
 
-        axios.post('http://127.0.0.1:3000/staff/add/',new_staff)
-        .then(response => console.log(response.data))
-        .catch((error) => console.log(error))
+        axios.patch(`http://127.0.0.1:3000/staff/update/${id}/`, update_staff)
+      .then((response) => navigate('/admin/staffs/'))
+      .catch((error) => console.log(error));
+
 
         navigate('/admin/Staffs/')
-    }
-  
-    const clear =() =>{
-      setStaffName('')
-      setHandlingcourse('')
-      setJoiningdate('')
-      setEmail('')
-      setpassword('')
-      setClasstype('')
     }
 
     const courseoption = courses.map(course =><option key={course._id} value={course._id}>{course.course_name}</option>)
@@ -64,7 +66,6 @@ const AddStaff = () => {
             <div className="formgroup">
             <label htmlFor="course" className='form-label-check'>Handling Course Name</label>
             <select className="form-select" aria-label="Default select example" onChange={event => setHandlingcourse(event.target.value)}>
-            <option value="0" selected>select</option>
               {courseoption}
             </select>
             </div>
@@ -87,7 +88,6 @@ const AddStaff = () => {
             <div className="formgroup">
             <label htmlFor="type" className='form-label-check'>online or offline</label>
             <select className="form-select" aria-label="Default select example" onChange={event => setClasstype(event.target.value)}>
-            <option value="0" selected>select</option>
               <option value="online">Online</option>
               <option value="offline">Offline</option>
             </select>
@@ -95,12 +95,12 @@ const AddStaff = () => {
 
 
             <div className="bottom-box">
-                <button className='form-button' type='submit' onClick={submit}>Add</button>
-                <button className='form-button' onClick={clear}>clear</button>
+                <button className='form-button' type='submit' onClick={update}>update</button>
+                <button className='form-button' onClick={() => navigate('/admin/staffs/')}>cancel</button>
             </div>
         </form>
     </div>
   )
 }
 
-export default AddStaff
+export default EditStaff

@@ -10,6 +10,9 @@ import AddStaff from './Admin/AddStaff'
 import AddCourse from './Admin/AddCourse'
 import Batch from './Admin/Batch'
 import CreateBatch from './Admin/CreateBatch'
+import EditStudent from './Admin/EditStudent'
+import EditStaff from './Admin/EditStaff'
+import EditCourse from './Admin/EditCourse'
 
 function App() {
   return (
@@ -18,12 +21,15 @@ function App() {
 
           <Route path={'/admin/students/'} element={<StudentsList />}/>
           <Route path={'/admin/students/add/'} element={<AddStudent />}/>
+          <Route path={'/admin/students/edit/:id/'} element={<EditStudent />}/>
 
           <Route path={'/admin/Staffs/'} element={<StaffsList />}/>
           <Route path={'/admin/Staffs/add/'} element={<AddStaff />}/>
+          <Route path={'/admin/staffs/edit/:id/'} element={<EditStaff />}/>
 
           <Route path={'/admin/courses/'} element={<Courses />}/>
           <Route path={'/admin/courses/add/'} element={<AddCourse />}/>
+          <Route path={'/admin/course/edit/:id/'} element={<EditCourse />}/>
 
           <Route path={'/admin/batch/'} element={<Batch />}/>
           <Route path={'/admin/batch/create/'} element={<CreateBatch />}/>

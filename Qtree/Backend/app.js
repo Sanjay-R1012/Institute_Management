@@ -5,6 +5,7 @@ import cors from 'cors'
 import CourseRouter from './Course/courseController.js'
 import StaffRouter from './Staff/staffController.js'
 import StudentRouter from './Student/studentController.js'
+import BatchRouter from './Batch/batchController.js'
 
 const app = express()
 app.use(express.json())
@@ -14,6 +15,7 @@ config()
 app.use('/course/',CourseRouter)
 app.use('/staff/',StaffRouter)
 app.use('/student/',StudentRouter)
+app.use('/batch/',BatchRouter)
 
 const Start = async () => {
 

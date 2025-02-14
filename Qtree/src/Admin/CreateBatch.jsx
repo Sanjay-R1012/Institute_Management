@@ -5,6 +5,7 @@ import axios from 'axios'
 import { useNavigate } from 'react-router-dom'
 
 const CreateBatch = () => {
+  const navigate =useNavigate()
 
       const [batchno,setBatchno]=useState('')
       const [coursename,setCourseName]=useState('')
@@ -54,7 +55,21 @@ const CreateBatch = () => {
 
 
     const submit =() => {
-        console.log([batchno,coursename,classtype,startingdate,staff,selectedTimeRange,selectedStudents])
+        const new_batch = {
+          "batchno":batchno,
+          "coursename":coursename,
+          "classtype":classtype,
+          "startingdate":startingdate,
+          "staff":staff,
+          "selectedtimerange":selectedTimeRange,
+          "selectedstudents":selectedStudents
+        }
+
+        axios.post('http://127.0.0.1:3000/batch/add/',new_batch)
+        .then(response => console.log(response.data))
+        .catch((error) => console.log(error))
+
+        navigate('/admin/batch/')
     }
 
     const clear = () => {
@@ -137,6 +152,14 @@ const CreateBatch = () => {
             </div>
             
             <div className="formgroup">
+            <label htmlFor="staff" className='form-label-check'>Staff</label>
+            <select className="form-select" aria-label="Default select example"   onChange={event => SetStaff(event.target.value)}>
+            <option value="0" >select</option>
+              {staffoption}
+            </select>
+            </div>
+
+            <div className="formgroup">
             <label htmlFor="enroll-date" className='form-label-check'>Starting Date</label>
             <input  type="date" id='enroll-date' className='form-input' value={startingdate} onChange={event => setStartingdate(event.target.value)} required/>
             </div>
@@ -158,13 +181,6 @@ const CreateBatch = () => {
             </select>
             </div>
 
-            <div className="formgroup">
-            <label htmlFor="staff" className='form-label-check'>Staff</label>
-            <select className="form-select" aria-label="Default select example"   onChange={event => SetStaff(event.target.value)}>
-            <option value="0" >select</option>
-              {staffoption}
-            </select>
-            </div>
 
             <div className="formgroup">
             <label htmlFor="plang" className='form-label-check'>Students</label>

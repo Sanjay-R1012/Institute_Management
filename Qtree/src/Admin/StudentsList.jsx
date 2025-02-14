@@ -11,6 +11,7 @@ const StudentsList = () => {
     const[courselist,SetCourselist]=useState([])
     const[stafflist,SetStafflist]=useState([])
     const[studentlist,setStudentlist]=useState([])
+    const[batchlist,setBatchlist]=useState([])
 
     useEffect(() =>{
         axios.get('http://127.0.0.1:3000/course/data/')
@@ -32,6 +33,13 @@ const StudentsList = () => {
              console.log(response.data)
         })
         .catch(error => console.log(error))
+
+        axios.get('http://127.0.0.1:3000/batch/data/')
+        .then(response => { 
+            setBatchlist(response.data)
+             console.log(response.data)
+        })
+        .catch(error => console.log(error))
     },[])
 
     const studentdata = studentlist.map(student => {
@@ -44,7 +52,10 @@ const StudentsList = () => {
         const Staff = stafflist.filter(
             (staff) => staff._id === student.staff
           )
-
+          
+          const Batch = batchlist.filter(
+              (batch) => batch._id === student.batchno
+            )
 
         return(
             <tr key={student._id}>
@@ -52,9 +63,11 @@ const StudentsList = () => {
                 <td>{Course[0].course_name}</td>
                 <td>{student.email}</td>
                 <td>{student.enrolldate}</td>
-                <td>{student.batchno}</td>
+                <td>{Batch[0].batchno}</td>
                 <td>{Staff[0].staffname}</td>
-                <td><button>view</button></td>
+                <td>
+                    <button onClick={() => navigate(`/admin/students/edit/${student._id}/`, { state: student})}>Edit</button>
+                </td>
             </tr>
         )
     })

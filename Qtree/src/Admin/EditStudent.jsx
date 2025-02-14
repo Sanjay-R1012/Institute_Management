@@ -1,19 +1,29 @@
-import React, { useEffect, useState } from "react";
-import "../index.css";
-import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import React, { useState,useEffect } from 'react'
+import { useLocation } from 'react-router-dom'
+import axios from 'axios'
+import { useNavigate, useParams } from 'react-router-dom'
 
-const AddStudent = () => {
-  const navigate = useNavigate();
+const EditStudent = () => {
+    const navigate = useNavigate()
 
-  const [studentname, setStudentName] = useState("");
-  const [coursename, setCourseName] = useState("");
-  const [enrolldate, setEnrolldate] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setpassword] = useState("");
-  const [classtype, setClasstype] = useState("");
-  const [batchno, setBatchno] = useState("");
-  const [staff, SetStaff] = useState("");
+    const params = useParams()
+
+    const {id} = params
+
+    const location = useLocation()
+
+    const student_data = location.state
+
+    console.log(student_data)
+
+    const [studentname, setStudentName] = useState(student_data.studentname);
+  const [coursename, setCourseName] = useState(student_data.coursename);
+  const [enrolldate, setEnrolldate] = useState(student_data.enrolldate);
+  const [email, setEmail] = useState(student_data.email);
+  const [password, setpassword] = useState(student_data.password);
+  const [classtype, setClasstype] = useState(student_data.classtype);
+  const [batchno, setBatchno] = useState(student_data.batchno);
+  const [staff, SetStaff] = useState(student_data.staff);
   const [staffslist, SetStafflist] = useState([]);
   const [courselist, SetCourselist] = useState([]);
   const [batchlist, SetBatchlist] = useState([]);
@@ -43,8 +53,8 @@ const AddStudent = () => {
         .catch(error => console.log(error))
   }, []);
 
-  const submit = () => {
-    const new_student = {
+  const update = () => {
+    const update_student = {
       studentname: studentname,
       coursename: coursename,
       enrolldate: enrolldate,
@@ -56,23 +66,13 @@ const AddStudent = () => {
     };
 
     axios
-      .post("http://127.0.0.1:3000/student/add/", new_student)
-      .then((response) => console.log(response.data))
+      .patch(`http://127.0.0.1:3000/student/update/${id}/`, update_student)
+      .then((response) => navigate('/admin/students/'))
       .catch((error) => console.log(error));
 
     navigate("/admin/students/");
   };
 
-  const clear = () => {
-    setStudentName("");
-    setCourseName("");
-    setEnrolldate("");
-    setEmail("");
-    setpassword("");
-    setClasstype("");
-    SetStaff("");
-    setBatchno("");
-  };
 
   const courseoption = courselist.map((course) => (
     <option key={course._id} value={course._id}>
@@ -122,11 +122,7 @@ const AddStudent = () => {
           <select
             className="form-select"
             aria-label="Default select example"
-            onChange={(event) => setCourseName(event.target.value)}
-          >
-            <option value="0" >
-              select
-            </option>
+            onChange={(event) => setCourseName(event.target.value)}>
             {courseoption}
           </select>
         </div>
@@ -180,11 +176,7 @@ const AddStudent = () => {
           <select
             className="form-select"
             aria-label="Default select example"
-            onChange={(event) => setClasstype(event.target.value)}
-          >
-            <option value="0" >
-              select
-            </option>
+            onChange={(event) => setClasstype(event.target.value)}>
             <option value="online">Online</option>
             <option value="offline">Offline</option>
           </select>
@@ -196,7 +188,6 @@ const AddStudent = () => {
             className="form-select"
             aria-label="Default select example"
             onChange={(event) => setBatchno(event.target.value)}>
-            <option value="0">select</option>
             {batchoption}
           </select>
         </div>
@@ -207,24 +198,21 @@ const AddStudent = () => {
             className="form-select"
             aria-label="Default select example"
             onChange={(event) => SetStaff(event.target.value)}>
-            <option value="0" >
-              select
-            </option>
             {staffoption}
           </select>
         </div>
 
         <div className="bottom-box">
-          <button onClick={submit} value="Submit" className="form-button">
-            Add
+          <button onClick={update} value="Submit" className="form-button">
+            Update
           </button>
-          <button onClick={clear} className="form-button">
-            clear
+          <button onClick={() => navigate('/admin/students/')} className="form-button">
+            cancel
           </button>
         </div>
       </form>
     </div>
-  );
-};
+  )
+}
 
-export default AddStudent;
+export default EditStudent

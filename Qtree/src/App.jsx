@@ -13,6 +13,8 @@ import CreateBatch from './Admin/CreateBatch'
 import EditStudent from './Admin/EditStudent'
 import EditStaff from './Admin/EditStaff'
 import EditCourse from './Admin/EditCourse'
+import TimeTable from './Staff/TimeTable'
+import ClassReport from './Staff/ClassReport'
 
 function App() {
   return (
@@ -39,6 +41,9 @@ function App() {
           <Route path={'/staff/classes/'} element={<DailyClasses />}/>
 
           <Route path={'/student/data/'} element={<StudentDetails />}/>
+
+          <Route path={'/staff/timetable/'} element={<TimeTable />}/>
+          <Route path={'/admin/staff/report/:id/'} element={<ClassReport />}/>
       </Routes>
     </div>
   )

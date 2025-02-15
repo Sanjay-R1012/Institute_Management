@@ -10,7 +10,7 @@ const Navbar = () => {
             <NavLink className={'nav-link'} to={'/admin/courses/'}>Courses</NavLink>
             <NavLink className={'nav-link'} to={'/admin/batch/'}>Batch</NavLink>
             <NavLink className={'nav-link'} to={'/admin/request/'}>Waiting</NavLink>
-            <NavLink className={'nav-link'} to={'/staff/classes/'}>Class</NavLink>
+            <NavLink className={'nav-link'} to={'/staff/classes/'}>Batches</NavLink>
             <NavLink className={'nav-link'} to={'/student/data/'}>Sdata</NavLink>
           </ul>
   </div>

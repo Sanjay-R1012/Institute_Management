@@ -21,6 +21,8 @@ const ClassReport = () => {
             const[stafflist,SetStafflist]=useState([])
             const[studentlist,setStudentlist]=useState([])
             const[batchlist,setBatchlist]=useState([])
+            const[filteredbatch,setFilteredbatch]=useState([])
+            const [attendance, setAttendance] = useState({});
         
             useEffect(() =>{
                 axios.get('http://127.0.0.1:3000/course/data/')
@@ -51,10 +53,15 @@ const ClassReport = () => {
                 .catch(error => console.log(error))
             },[])
 
-            const filteredbatch = batchlist.filter(
-                (batch) => batch._id === class_data.id.batch
-              )
-              console.log("bjbwbdckaeb",filteredbatch)
+            useEffect(() =>{
+                const filtered_batch = batchlist.filter(
+                    (batch) => batch._id === class_data.id.batch
+                  )
+                  console.log("bjbwbdckaeb",filteredbatch)
+                  setFilteredbatch(filtered_batch)
+            },[batchlist])
+
+
 
               const studentdata = filteredbatch.map(batch => {
                 const selectedStudentIds = batch.selectedstudents;
@@ -62,15 +69,53 @@ const ClassReport = () => {
                 const selectedStudents = studentlist.filter(student => 
                 selectedStudentIds.includes(student._id))
                 console.log("students",selectedStudents)
+
+                return(selectedStudents.map(student => (
+                                <tr key={student._id}>
+                                    <td>{student.studentname}</td>
+                                    <td>{student.email}</td>
+                                    <td>{student.classtype}</td>
+                                    <td>
+                                        <input
+                                            type="checkbox"
+                                            checked={attendance[student._id] || false}
+                                            onChange={() => handleAttendanceChange(student._id)}/>
+                                    </td>
+                                </tr>
+                            ))     
+                )
               })
+
+              const handleAttendanceChange = (studentId) => {
+                setAttendance(prevAttendance => ({
+                    ...prevAttendance,
+                    [studentId]: !prevAttendance[studentId]
+                }));
+            };
+
+            console.log(attendance,"attendance")
+
 
   return (
     <div className='box'>
     <form className='addform'>
 
-    <div className="formgroup ">
-        {studentdata}
-        </div>
+            <div>
+                <h1>Student Attendance</h1>
+                <table className="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>Student Name</th>
+                        <th>Email</th>
+                        <th>Class Type</th>
+                        <th>Present</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {studentdata}
+                </tbody>
+                </table>
+            </div>
 
         <div className="formgroup">
         <textarea id='todayactivity' className='form-input para-input' value={todayactivity} onChange={event =>(setTodayactivity(event.target.value))} required/>

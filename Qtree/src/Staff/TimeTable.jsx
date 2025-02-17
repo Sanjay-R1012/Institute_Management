@@ -5,7 +5,7 @@ import { useNavigate, useParams } from 'react-router-dom'
 import Navbar from '../Navbar'
 
 const TimeTable = () => {
-    const navigate =useNavigate()
+  const navigate = useNavigate()
 
     const[courselist,SetCourselist]=useState([])
     const[stafflist,SetStafflist]=useState([])
@@ -41,33 +41,39 @@ const TimeTable = () => {
         .catch(error => console.log(error))
     },[])
 
-    const getNextClassDate = (startDate) => {
-        let currentDate = new Date(startDate);
-        while (currentDate.getDay() === 0 || currentDate.getDay() === 6) {
-          currentDate.setDate(currentDate.getDate() + 1);
-        }
-        return currentDate;
+    const getCurrentDate = () => {
+        const today = new Date();
+        return today.toISOString().split("T")[0];
       };
     
-      // Function to generate daily class for a staff member
-      const generateDailyClass = (staff) => {
+      // Check if today is a weekend
+      const isWeekend = () => {
+        const today = new Date();
+        return today.getDay() === 0 || today.getDay() === 6; // Sunday = 0, Saturday = 6
+      };
+    
+      // Function to generate today's timetable for a staff member
+      const generateTodaysTimetable = (staff) => {
+        if (isWeekend()) {
+          return null; // No classes on weekends
+        }
+    
         const batch = batchlist.find((b) => b.coursename === staff.handlingcourse);
         const course = courselist.find((c) => c._id === staff.handlingcourse);
     
         if (batch && course) {
-          const classDate = getNextClassDate(staff.joiningdate);
           return {
-            date: classDate.toISOString().split("T")[0],
-            day: classDate.toLocaleDateString("en-IN", { weekday: "long" }),
+            date: getCurrentDate(),
+            day: new Date().toLocaleDateString("en-IN", { weekday: "long" }),
             batch_no: batch.batchno,
             course_name: course.course_name,
             class_type: batch.classtype,
             time_range: batch.selectedtimerange,
             staff_name: staff.staffname,
             id:{staff:staff._id,
-             batch:batch._id
-            }
-        }
+              batch:batch._id
+             }
+          };
         }
         return null;
       };
@@ -78,13 +84,22 @@ const TimeTable = () => {
         <Navbar />
         <div className='students-list'>
         <div>
-      <h1>Daily Class Timetable</h1>
+      <h1>Today's Class Timetable</h1>
       {stafflist.map((staff) => {
-        const dailyClass = generateDailyClass(staff);
+        if (isWeekend()) {
+          return (
+            <div key={staff._id}>
+              <h2>Timetable for {staff.staffname}</h2>
+              <p>No classes on weekends.</p>
+            </div>
+          );
+        }
+
+        const todaysClass = generateTodaysTimetable(staff);
         return (
-          <div key={staff._id} className='student-list'>
+          <div key={staff._id} >
             <h2>Timetable for {staff.staffname}</h2>
-            {dailyClass ? (
+            {todaysClass ? (
               <table border="1" cellPadding="10" cellSpacing="0" className='student-table'>
                 <thead>
                   <tr>
@@ -94,25 +109,25 @@ const TimeTable = () => {
                     <th>Course Name</th>
                     <th>Class Type</th>
                     <th>Time Range</th>
-                    <th>Daily Report</th>
+                    <th>Dailly Report</th>
                   </tr>
                 </thead>
                 <tbody>
                   <tr>
-                    <td>{dailyClass.date}</td>
-                    <td>{dailyClass.day}</td>
-                    <td>{dailyClass.batch_no}</td>
-                    <td>{dailyClass.course_name}</td>
-                    <td>{dailyClass.class_type}</td>
-                    <td>{dailyClass.time_range}</td>
+                    <td>{todaysClass.date}</td>
+                    <td>{todaysClass.day}</td>
+                    <td>{todaysClass.batch_no}</td>
+                    <td>{todaysClass.course_name}</td>
+                    <td>{todaysClass.class_type}</td>
+                    <td>{todaysClass.time_range}</td>
                     <td>
-                    <button onClick={() => navigate(`/admin/staff/report/${staff._id}/`, { state: dailyClass})}>Report</button>
+                    <button onClick={() => navigate(`/admin/staff/report/${staff._id}/`, { state: todaysClass})}>Report</button>
                     </td>
                   </tr>
                 </tbody>
-              </table>
+              </table >
             ) : (
-              <p>No class scheduled.</p>
+              <p>No class scheduled for today.</p>
             )}
           </div>
         );

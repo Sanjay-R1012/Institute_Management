@@ -55,6 +55,8 @@ const StudentsList = () => {
           
           const filteredbatch = batchlist.filter(
             (batch) => (batch.selectedstudents.includes(student._id)))
+
+
           
         return(
             <tr key={student._id}>
@@ -62,7 +64,7 @@ const StudentsList = () => {
                 <td>{Course[0].course_name}</td>
                 <td>{student.email}</td>
                 <td>{student.enrolldate}</td>
-                <td>{filteredbatch[0].batchno}</td>
+                <td>{filteredbatch.length>0 ? filteredbatch[0].batchno : "not assigned"}</td>
                 <td>{Staff[0].staffname}</td>
                 <td>
                     <button onClick={() => navigate(`/admin/students/edit/${student._id}/`, { state: student})}>Edit</button>

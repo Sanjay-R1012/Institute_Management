@@ -187,8 +187,8 @@
 }
 
 .para-input{
-    height: 70px;
-    resize: none;
+    height: 80px;
+    resize:vertical;
 }
 
 .form-label-check{

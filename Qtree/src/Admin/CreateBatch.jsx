@@ -19,6 +19,7 @@ const CreateBatch = () => {
       const [selectedStudents, setSelectedStudents] = useState([])
       const [selectedTimeRange, setSelectedTimeRange] = useState("")
       const [batchlist, SetBatchlist] = useState([]);
+      const [unfinishedbatchlist, SetUnfinishedbatchlist] = useState([]);
 
   
       useEffect(() =>{
@@ -50,6 +51,12 @@ const CreateBatch = () => {
         .catch(error => console.log(error))
       },[])
 
+      useEffect(() =>{
+        SetUnfinishedbatchlist(batchlist.filter(batch => batch.finished == false))
+        console.log(batchlist.filter(batch => batch.finished == false),"unfinished batches")
+      },[batchlist])
+
+
       const courseoption = courselist.map(course =><option key={course._id} value={course._id}>{course.course_name}</option>)
 
       const filteredstaff = stafflist.filter((staff) => staff.handlingcourse === coursename)
@@ -61,6 +68,9 @@ const CreateBatch = () => {
 
     const filteredstudent =studentlist.filter(student => student.coursename === coursename)
 
+    const existing_selectedStudents = batchlist.flatMap(batch => batch.selectedstudents);
+    const studentsNotInBatch = filteredstudent.filter(student => !existing_selectedStudents.includes(student._id));
+
 
     const submit =() => {
         const new_batch = {
@@ -70,7 +80,8 @@ const CreateBatch = () => {
           "startingdate":startingdate,
           "staff":staff,
           "selectedtimerange":selectedTimeRange,
-          "selectedstudents":selectedStudents
+          "selectedstudents":selectedStudents,
+          "finished":false
         }
 
         axios.post('http://127.0.0.1:3000/batch/add/',new_batch)
@@ -115,7 +126,7 @@ const CreateBatch = () => {
     SetStaff(staffId);
 
     // Filter out time ranges already assigned to the selected staff
-    const assignedTimeRanges = batchlist
+    const assignedTimeRanges = unfinishedbatchlist
       .filter((batch) => batch.staff === staffId)
       .map((batch) => batch.selectedtimerange);
 
@@ -142,7 +153,7 @@ const CreateBatch = () => {
         }
       };
 
-      const studentoption =filteredstudent.map((student) => (
+      const studentoption =studentsNotInBatch.map((student) => (
         <div key={student._id} className="form-check form-check-inline">
           <label className="form-check-label">
             <input className="form-check-input" type="checkbox" value={student._id} onChange={(e) => handleCheckboxChange(e, student._id)}

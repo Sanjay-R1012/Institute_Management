@@ -53,6 +53,8 @@ const ClassReport = () => {
                 .catch(error => console.log(error))
             },[])
 
+            
+
             useEffect(() =>{
                 const filtered_batch = batchlist.filter(
                     (batch) => batch._id === class_data.id.batch
@@ -65,6 +67,7 @@ const ClassReport = () => {
 
               const studentdata = filteredbatch.map(batch => {
                 const selectedStudentIds = batch.selectedstudents;
+                
 
                 const selectedStudents = studentlist.filter(student => 
                 selectedStudentIds.includes(student._id))
@@ -93,7 +96,23 @@ const ClassReport = () => {
                 }));
             };
 
+            console.log(class_data.id.batch,"batch id")
             console.log(attendance,"attendance")
+
+            const createreport = () => {
+                const new_report ={
+                    "date":class_data.date,
+                    "attendance":attendance,
+                    "todayactivity":todayactivity,
+                    "staff": id,
+                    "batch" : class_data.id.batch
+                }
+                axios.post("http://127.0.0.1:3000/report/add/", new_report)
+                .then((response) => console.log(response.data))
+                .catch((error) => console.log(error));
+
+                navigate('/staff/timetable/')
+            }
 
 
   return (
@@ -123,8 +142,8 @@ const ClassReport = () => {
         </div>
 
         <div className="bottom-box">
-            <button className='form-button'  >Update</button>
-            <button className='form-button' onClick={() => navigate("/admin/courses/")}>cancel</button>
+            <button className='form-button' type='button' onClick={createreport}>Update</button>
+            <button className='form-button' onClick={() => navigate('/staff/timetable/')}>cancel</button>
         </div>
     </form>
 </div>

@@ -11,6 +11,7 @@ const Batch = () => {
     const[stafflist,SetStafflist]=useState([])
     const[studentlist,setStudentlist]=useState([])
     const[batchlist,setbatchlist]=useState([])
+    const[filteredbatch,setFilteredbatch]=useState([])
 
     useEffect(() =>{  
         axios.get('http://127.0.0.1:3000/course/data/')
@@ -41,7 +42,15 @@ const Batch = () => {
         .catch(error => console.log(error))
     },[])
 
-    const batchdata = batchlist.map(batch => {
+    useEffect(() => {setFilteredbatch(batchlist.filter((batch) => batch.finished === false))},[batchlist])
+
+    const finishedbatch =() => {
+      setFilteredbatch(batchlist.filter((batch) => batch.finished === true))
+    }
+
+    const unfinishedbatch = () =>{ setFilteredbatch(batchlist.filter((batch) => batch.finished === false))}
+
+    const batchdata = filteredbatch.map(batch => {
   
     
 
@@ -54,6 +63,15 @@ const Batch = () => {
       )
       console.log(batchlist)
 
+      const finished =(id) => {
+        const finished_batch={
+          'finished':true}
+      
+          axios.patch(`http://127.0.0.1:3000/batch/update/${id}/`, finished_batch)
+          .then((response) => console.log(response))
+          .catch((error) => console.log(error));
+      }
+
       return(
           <tr key={batch._id}>
               <td>{batch.batchno}</td>
@@ -64,6 +82,7 @@ const Batch = () => {
               <td>{batch.selectedtimerange}</td>
               <td>{batch.classtype}</td>
               <td><button>view</button></td>
+              <td><button type="submit" onClick={() =>finished(batch._id)}>finished</button></td>
           </tr>
       )
   })
@@ -74,6 +93,8 @@ const Batch = () => {
       <Navbar />
       <div className="students-list">
         <button className="btn" onClick={() => navigate("/admin/batch/create/")}>Create Batch</button>
+        <button className="btn" onClick={finishedbatch}>finished Batch</button>
+        <button className="btn" onClick={unfinishedbatch}>unfinished Batch</button>
         <table className="student-table">
           <thead>
             <tr>
@@ -85,6 +106,7 @@ const Batch = () => {
               <th>Class timing</th>
               <th>Class type</th>
               <th>more Data</th>
+              <th>batch finished</th>
             </tr>
           </thead>
           <tbody>

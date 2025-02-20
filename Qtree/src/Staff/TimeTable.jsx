@@ -11,6 +11,7 @@ const TimeTable = () => {
     const[stafflist,SetStafflist]=useState([])
     const[studentlist,setStudentlist]=useState([])
     const[batchlist,setBatchlist]=useState([])
+    const[report,setReport]=useState([])
 
     useEffect(() =>{
         axios.get('http://127.0.0.1:3000/course/data/')
@@ -39,7 +40,15 @@ const TimeTable = () => {
              console.log(response.data)
         })
         .catch(error => console.log(error))
+
+        axios.get('http://127.0.0.1:3000/report/data/')
+        .then(response => { 
+            setReport(response.data)
+             console.log(response.data)
+        })
+        .catch(error => console.log(error))
     },[])
+
 
     const getCurrentDate = () => {
         const today = new Date();
@@ -57,25 +66,57 @@ const TimeTable = () => {
         if (isWeekend()) {
           return null; // No classes on weekends
         }
-    
-        const batch = batchlist.find((b) => b.coursename === staff.handlingcourse);
-        const course = courselist.find((c) => c._id === staff.handlingcourse);
-    
-        if (batch && course) {
-          return {
-            date: getCurrentDate(),
-            day: new Date().toLocaleDateString("en-IN", { weekday: "long" }),
-            batch_no: batch.batchno,
-            course_name: course.course_name,
-            class_type: batch.classtype,
-            time_range: batch.selectedtimerange,
-            staff_name: staff.staffname,
-            id:{staff:staff._id,
-              batch:batch._id
-             }
-          };
-        }
-        return null;
+
+        const filtered_report =report.filter((rep) => rep.date === getCurrentDate())
+        console.log(filtered_report ,"Daily report")
+
+        const unfinishedbatch = batchlist.filter((batch) => batch.finished === false);
+        console.log(unfinishedbatch,"unfinished batches")
+
+        
+        const batch = unfinishedbatch.filter((b) => b.coursename === staff.handlingcourse);
+        console.log(batch)
+        
+        const batch2 =filtered_report.filter((repo) =>( batch._id === repo.batch))
+        console.log(batch2,"batch not submitting record")
+        
+
+      return batch.map((batch) => {
+
+      const batch2 =filtered_report.filter((repo) =>( batch._id === repo.batch))
+      console.log(batch2,"batch not submitting record")
+
+      const course = courselist.find((c) => c._id === batch.coursename);
+
+      if(batch2.length == 0){if (batch && course) {
+        return {
+          date: getCurrentDate(),
+          day: new Date().toLocaleDateString("en-IN", { weekday: "long" }),
+          batch_no: batch.batchno,
+          course_name: course.course_name,
+          class_type: batch.classtype,
+          time_range: batch.selectedtimerange,
+          staff_name: staff.staffname,
+          id:{staff:staff,
+            batch:batch._id
+          }
+        };
+      }}
+      return {
+        date: getCurrentDate(),
+        day: new Date().toLocaleDateString("en-IN", { weekday: "long" }),
+        batch_no: batch.batchno,
+        course_name: course.course_name,
+        class_type: batch.classtype,
+        time_range: batch.selectedtimerange,
+        staff_name: staff.staffname,
+        id:{staff:staff,
+          batch:batch._id
+        },
+        report:"submitted"
+      };
+    });
+
       };
 
 
@@ -83,57 +124,51 @@ const TimeTable = () => {
     <div>
         <Navbar />
         <div className='students-list'>
-        <div>
       <h1>Today's Class Timetable</h1>
       {stafflist.map((staff) => {
-        if (isWeekend()) {
-          return (
-            <div key={staff._id}>
-              <h2>Timetable for {staff.staffname}</h2>
-              <p>No classes on weekends.</p>
-            </div>
-          );
-        }
-
-        const todaysClass = generateTodaysTimetable(staff);
+        const todaysClasses = generateTodaysTimetable(staff);
         return (
-          <div key={staff._id} >
+          <div key={staff._id}>
             <h2>Timetable for {staff.staffname}</h2>
-            {todaysClass ? (
-              <table border="1" cellPadding="10" cellSpacing="0" className='student-table'>
-                <thead>
-                  <tr>
-                    <th>Date</th>
-                    <th>Day</th>
-                    <th>Batch No</th>
-                    <th>Course Name</th>
-                    <th>Class Type</th>
-                    <th>Time Range</th>
-                    <th>Dailly Report</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td>{todaysClass.date}</td>
-                    <td>{todaysClass.day}</td>
-                    <td>{todaysClass.batch_no}</td>
-                    <td>{todaysClass.course_name}</td>
-                    <td>{todaysClass.class_type}</td>
-                    <td>{todaysClass.time_range}</td>
-                    <td>
+            {isWeekend() ? (
+              <p>No classes on weekends.</p>
+            ) : todaysClasses && todaysClasses.length > 0  ? (
+              todaysClasses.map((todaysClass, index) =>  (
+                <table key={index} border="1" cellPadding="10" cellSpacing="0" className='student-table'>
+                  <thead>
+                    <tr>
+                      <th>Date</th>
+                      <th>Day</th>
+                      <th>Batch No</th>
+                      <th>Course Name</th>
+                      <th>Class Type</th>
+                      <th>Time Range</th>
+                      <th>Dailly Report</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>{todaysClass.date}</td>
+                      <td>{todaysClass.day}</td>
+                      <td>{todaysClass.batch_no}</td>
+                      <td>{todaysClass.course_name}</td>
+                      <td>{todaysClass.class_type}</td>
+                      <td>{todaysClass.time_range}</td>
+                      {todaysClass.report !=="submitted" ? (
+                      <td>
                     <button onClick={() => navigate(`/admin/staff/report/${staff._id}/`, { state: todaysClass})}>Report</button>
-                    </td>
-                  </tr>
-                </tbody>
-              </table >
+                    </td>):(<td>Report submitted</td>)}
+                    </tr>
+                  </tbody>
+                </table>
+              ))
             ) : (
-              <p>No class scheduled for today.</p>
+              <p>No class scheduled or classes finished.</p>
             )}
           </div>
         );
       })}
-    </div>
-    </div>
+      </div>
     </div>
   )
 }

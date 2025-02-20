@@ -8,7 +8,8 @@ const BatchSchema = mongoose.Schema({
     startingdate:String,
     staff:String,
     selectedtimerange:String,
-    selectedstudents:Array
+    selectedstudents:Array,
+    finished : Boolean
 })
 
 export const Batch = mongoose.model('batch', BatchSchema)

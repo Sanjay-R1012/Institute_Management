@@ -3,7 +3,7 @@
     padding: 0;
 }
 .side-nav{
-    width: 10vw;
+    width: 12vw;
     height: 100vh;
     position: fixed;
     background-color:orange;
@@ -46,8 +46,14 @@
 }
 
 .students-list {
-    margin-left: 10vw;
-    width: 90vw;
+    margin-left: 12vw;
+    width: 87vw;
+    display: flex;
+    flex-direction: column;
+}
+
+.students-report-list {
+    width: 100vw;
     display: flex;
     flex-direction: column;
 }
@@ -195,4 +201,22 @@
     display: block;
     color: darkblue;
     font-weight: 400;
+}
+
+.student-data-group {
+    display:flex;
+    flex-wrap: wrap;
+    background-color:rgb(145, 238, 145);
+    border-radius: 10px;
+    padding-top: 10px;
+    justify-content:space-between;
+    
+}
+
+.student-data-group p{
+    width: 30vw;
+    font-weight: 400;
+    font-size: medium;
+    color:rgb(32, 37, 45);
+    padding-left: 30px;
 }

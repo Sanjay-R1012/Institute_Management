@@ -12,6 +12,7 @@ const DailyClasses = () => {
   const[stafflist,SetStafflist]=useState([])
   const[studentlist,setStudentlist]=useState([])
   const[batchlist,setBatchlist]=useState([])
+  const[report,setReport]=useState([])
 
   useEffect(() =>{
       axios.get('http://127.0.0.1:3000/course/data/')
@@ -40,8 +41,16 @@ const DailyClasses = () => {
            console.log(response.data)
       })
       .catch(error => console.log(error))
+
+      axios.get('http://127.0.0.1:3000/report/data/')
+        .then(response => { 
+            setReport(response.data)
+             console.log(response.data)
+        })
+        .catch(error => console.log(error))
   },[])
 
+  
   const filteredbatch = batchlist.filter(
     (batch) => batch.staff === "67ad908dfed51cd3aa8ebd52"
   )
@@ -60,6 +69,14 @@ const DailyClasses = () => {
     const st = selectedStudents.map(student => (
           <p key={student._id}>{student.studentname}</p>
   ))
+
+  const reportdata =report.filter((rep) => rep.batch == batch._id)
+
+  const report_list = {
+    "batch":batch,
+    "reportdata":reportdata,
+    "students":selectedStudents,
+  }
     
 
     return(
@@ -70,6 +87,8 @@ const DailyClasses = () => {
             <td>{batch.startingdate}</td>
             <td>{batch.selectedtimerange}</td>
             <td>{st}</td>
+            <td>{reportdata.length}</td>
+            <td><button onClick={() => navigate(`/admin/staff/report/data/${batch._id}/`, { state: report_list})}>report</button></td>
         </tr>
     )
 })
@@ -89,6 +108,8 @@ const DailyClasses = () => {
               <th>Started Date </th>
               <th>Timing </th>
               <th>Students</th>
+              <th>Classes Finished</th>
+              <th>Report</th>
             </tr>
           </thead>
           <tbody>

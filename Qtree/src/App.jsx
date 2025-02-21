@@ -15,6 +15,7 @@ import EditStaff from './Admin/EditStaff'
 import EditCourse from './Admin/EditCourse'
 import TimeTable from './Staff/TimeTable'
 import ClassReport from './Staff/ClassReport'
+import Reportlist from './Staff/Reportlist'
 
 function App() {
   return (
@@ -44,6 +45,7 @@ function App() {
 
           <Route path={'/staff/timetable/'} element={<TimeTable />}/>
           <Route path={'/admin/staff/report/:id/'} element={<ClassReport />}/>
+          <Route path={'/admin/staff/report/data/:id/'} element={<Reportlist />}/>
       </Routes>
     </div>
   )

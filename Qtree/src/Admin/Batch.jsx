@@ -12,6 +12,7 @@ const Batch = () => {
     const[studentlist,setStudentlist]=useState([])
     const[batchlist,setbatchlist]=useState([])
     const[filteredbatch,setFilteredbatch]=useState([])
+    const[reportlist,setReportlist]=useState([])
 
     useEffect(() =>{  
         axios.get('http://127.0.0.1:3000/course/data/')
@@ -40,6 +41,13 @@ const Batch = () => {
              console.log(response.data)
         })
         .catch(error => console.log(error))
+
+        axios.get('http://127.0.0.1:3000/report/data/')
+        .then(response => { 
+            setReportlist(response.data)
+             console.log(response.data)
+        })
+        .catch(error => console.log(error))
     },[])
 
     useEffect(() => {setFilteredbatch(batchlist.filter((batch) => batch.finished === false))},[batchlist])
@@ -56,6 +64,10 @@ const Batch = () => {
 
       const Staffs = stafflist.filter(
           (staff) => staff._id === batch.staff
+        )
+
+      const report = reportlist.filter(
+          (report) => batch._id === report.batch 
         )
       
       const Course = courselist.filter(
@@ -81,6 +93,7 @@ const Batch = () => {
               <td>{batch.startingdate}</td>
               <td>{batch.selectedtimerange}</td>
               <td>{batch.classtype}</td>
+              <td>{report.length}</td>
               <td><button>view</button></td>
               <td><button type="submit" onClick={() =>finished(batch._id)}>finished</button></td>
           </tr>
@@ -105,6 +118,7 @@ const Batch = () => {
               <th>Starting Date</th>
               <th>Class timing</th>
               <th>Class type</th>
+              <th>Classes Finished</th>
               <th>more Data</th>
               <th>batch finished</th>
             </tr>

@@ -6,7 +6,6 @@ const StudentSchema = mongoose.Schema({
       coursename : String,
       enrolldate : String,
       email : String,
-      password : String,
       classtype : String,
       staff:String
 })

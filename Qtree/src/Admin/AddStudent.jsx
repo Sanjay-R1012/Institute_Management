@@ -48,13 +48,23 @@ const AddStudent = () => {
       coursename: coursename,
       enrolldate: enrolldate,
       email: email,
-      password: password,
       classtype: classtype,
       staff: staff,
     };
 
+    const new_user = {
+      email:email,
+      password:password,
+      role:"student"
+    }
+
     axios
       .post("http://127.0.0.1:3000/student/add/", new_student)
+      .then((response) => console.log(response.data))
+      .catch((error) => console.log(error));
+
+    axios
+      .post("http://127.0.0.1:3000/auth/create/user/", new_user)
       .then((response) => console.log(response.data))
       .catch((error) => console.log(error));
 
@@ -68,8 +78,7 @@ const AddStudent = () => {
     setEmail("");
     setpassword("");
     setClasstype("");
-    SetStaff("");
-    setBatchno("");
+    SetStaff("")
   };
 
   const courseoption = courselist.map((course) => (
@@ -171,8 +180,7 @@ const AddStudent = () => {
           <select
             className="form-select"
             aria-label="Default select example"
-            onChange={(event) => setClasstype(event.target.value)}
-          >
+            onChange={(event) => setClasstype(event.target.value)}>
             <option value="0" >
               select
             </option>

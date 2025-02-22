@@ -63,8 +63,19 @@ const EditStudent = () => {
       staff: staff,
     };
 
+    const new_user = {
+      email:email,
+      password:password,
+      role:"student"
+    }
+
     axios
       .patch(`http://127.0.0.1:3000/student/update/${id}/`, update_student)
+      .then((response) => navigate('/admin/students/'))
+      .catch((error) => console.log(error));
+
+    axios
+      .patch(`http://127.0.0.1:3000/auth/user/update/`, new_user)
       .then((response) => navigate('/admin/students/'))
       .catch((error) => console.log(error));
 

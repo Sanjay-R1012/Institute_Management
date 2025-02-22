@@ -41,11 +41,21 @@ const EditStaff = () => {
         "handlingcourse" : handlingcourse,
         "joiningdate" : joiningdate,
         "email" : email,
-        "password" : password,
         "classtype" : classtype}
+
+        const new_user = {
+          email:email,
+          password:password,
+          role:"staff"
+        }
 
         axios.patch(`http://127.0.0.1:3000/staff/update/${id}/`, update_staff)
       .then((response) => navigate('/admin/staffs/'))
+      .catch((error) => console.log(error));
+
+      axios
+      .patch(`http://127.0.0.1:3000/auth/user/update/`, new_user)
+      .then((response) => navigate('/admin/students/'))
       .catch((error) => console.log(error));
 
 

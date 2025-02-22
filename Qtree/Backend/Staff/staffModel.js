@@ -6,7 +6,6 @@ const StaffSchema = mongoose.Schema({
       handlingcourse : String,
       joiningdate : String,
       email : String,
-      password : String,
       classtype : String
 })
 

@@ -7,6 +7,7 @@ import StaffRouter from './Staff/staffController.js'
 import StudentRouter from './Student/studentController.js'
 import BatchRouter from './Batch/batchController.js'
 import ReportRouter from './DailyReport/dailyreportController.js'
+import AuthRouter from './Authentication/authController.js'
 
 const app = express()
 app.use(express.json())
@@ -18,6 +19,7 @@ app.use('/staff/',StaffRouter)
 app.use('/student/',StudentRouter)
 app.use('/batch/',BatchRouter)
 app.use('/report',ReportRouter)
+app.use('/auth/',AuthRouter)
 
 const Start = async () => {
 

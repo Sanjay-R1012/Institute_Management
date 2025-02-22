@@ -31,12 +31,22 @@ const AddStaff = () => {
         "handlingcourse" : handlingcourse,
         "joiningdate" : joiningdate,
         "email" : email,
-        "password" : password,
         "classtype" : classtype}
+
+        const new_user = {
+          email:email,
+          password:password,
+          role:"staff"
+        }
 
         axios.post('http://127.0.0.1:3000/staff/add/',new_staff)
         .then(response => console.log(response.data))
         .catch((error) => console.log(error))
+
+        axios
+      .post("http://127.0.0.1:3000/auth/create/user/", new_user)
+      .then((response) => console.log(response.data))
+      .catch((error) => console.log(error));
 
         navigate('/admin/Staffs/')
     }

@@ -122,7 +122,7 @@ const TimeTable = () => {
 
   return (
     <div>
-        <Navbar />
+        <Navbar role={localStorage.getItem("role")} />
         <div className='students-list'>
       <h1>Today's Class Timetable</h1>
       {stafflist.map((staff) => {

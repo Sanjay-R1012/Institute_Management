@@ -2,7 +2,11 @@ import React from 'react'
 import './index.css'
 import { NavLink } from 'react-router-dom'
 
-const Navbar = () => {
+const Navbar = (props) => {
+
+  const {role}=props
+
+
   const admin =<div>
               <ul>
             <NavLink className={'nav-link'} to={'/admin/students/'}>Students</NavLink>
@@ -21,12 +25,19 @@ const Navbar = () => {
           </ul>
   </div>
 
+    const nav = () => {if(role == "staff"){
+      return admin
+    }
+    else{
+      return staff
+    }
+    }
+
   return (
     <div className='side-nav'>
         <img className='logo' src="https://www.qtreetechnologies.in/assets/frontend/img/logo-dark.png" alt="Qtree logo" />
         <div className="navbar">
-          {admin}
-          {staff}
+          {nav}
         </div> 
         <button className='logout'>Log out</button>
     </div>

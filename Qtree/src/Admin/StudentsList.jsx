@@ -76,7 +76,7 @@ const StudentsList = () => {
 
   return (
     <div>
-        <Navbar />
+        <Navbar role={localStorage.getItem("role")} />
     <div className='students-list'>
         <button className='btn' onClick={() =>navigate('/admin/students/add/')}>Add Student</button>
         <table className='student-table'>

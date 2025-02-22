@@ -25,27 +25,32 @@ const ClassReport = () => {
             const [attendance, setAttendance] = useState({});
         
             useEffect(() =>{
-                axios.get('http://127.0.0.1:3000/course/data/')
+                const headers ={
+                    'Content-Type':'Application/Json',
+                    'Authorization':localStorage.getItem('Bearer')
+                }
+
+                axios.get('http://127.0.0.1:3000/course/data/',{headers})
                     .then(response =>{ SetCourselist(response.data)
                         console.log(response.data)
                     })
                     .catch(error => console.log(error))
         
-                axios.get('http://127.0.0.1:3000/staff/data/')
+                axios.get('http://127.0.0.1:3000/staff/data/',{headers})
                 .then(response => { 
                     SetStafflist(response.data)
                      console.log(response.data)
                 })
                 .catch(error => console.log(error))
         
-                axios.get('http://127.0.0.1:3000/student/data/')
+                axios.get('http://127.0.0.1:3000/student/data/',{headers})
                 .then(response => { 
                     setStudentlist(response.data)
                      console.log(response.data)
                 })
                 .catch(error => console.log(error))
         
-                axios.get('http://127.0.0.1:3000/batch/data/')
+                axios.get('http://127.0.0.1:3000/batch/data/',{headers})
                 .then(response => { 
                     setBatchlist(response.data)
                      console.log(response.data)

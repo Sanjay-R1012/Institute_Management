@@ -2,7 +2,7 @@ import React, { useState,useEffect } from 'react'
 import { useLocation } from 'react-router-dom'
 import axios from 'axios'
 import { useNavigate, useParams } from 'react-router-dom'
-import Navbar from '../Navbar'
+import Staffnavbar from '../Staffnavbar'
 
 const TimeTable = () => {
   const navigate = useNavigate()
@@ -14,34 +14,39 @@ const TimeTable = () => {
     const[report,setReport]=useState([])
 
     useEffect(() =>{
-        axios.get('http://127.0.0.1:3000/course/data/')
+      const headers ={
+        'Content-Type':'Application/Json',
+        'Authorization':localStorage.getItem('Bearer')
+    }
+
+        axios.get('http://127.0.0.1:3000/course/data/',{headers})
             .then(response =>{ SetCourselist(response.data)
                 console.log(response.data)
             })
             .catch(error => console.log(error))
 
-        axios.get('http://127.0.0.1:3000/staff/data/')
+        axios.get('http://127.0.0.1:3000/staff/data/',{headers})
         .then(response => { 
             SetStafflist(response.data)
              console.log(response.data)
         })
         .catch(error => console.log(error))
 
-        axios.get('http://127.0.0.1:3000/student/data/')
+        axios.get('http://127.0.0.1:3000/student/data/',{headers})
         .then(response => { 
             setStudentlist(response.data)
              console.log(response.data)
         })
         .catch(error => console.log(error))
 
-        axios.get('http://127.0.0.1:3000/batch/data/')
+        axios.get('http://127.0.0.1:3000/batch/data/',{headers})
         .then(response => { 
             setBatchlist(response.data)
              console.log(response.data)
         })
         .catch(error => console.log(error))
 
-        axios.get('http://127.0.0.1:3000/report/data/')
+        axios.get('http://127.0.0.1:3000/report/data/',{headers})
         .then(response => { 
             setReport(response.data)
              console.log(response.data)
@@ -119,13 +124,13 @@ const TimeTable = () => {
 
       };
 
+      const loginstaff = stafflist.filter((s) => s.email == localStorage.getItem("email"))
 
   return (
     <div>
-        <Navbar role={localStorage.getItem("role")} />
+        <Staffnavbar />
         <div className='students-list'>
-      <h1>Today's Class Timetable</h1>
-      {stafflist.map((staff) => {
+      {loginstaff.map((staff) => {
         const todaysClasses = generateTodaysTimetable(staff);
         return (
           <div key={staff._id}>
@@ -156,7 +161,7 @@ const TimeTable = () => {
                       <td>{todaysClass.time_range}</td>
                       {todaysClass.report !=="submitted" ? (
                       <td>
-                    <button onClick={() => navigate(`/admin/staff/report/${staff._id}/`, { state: todaysClass})}>Report</button>
+                    <button className='table-button' onClick={() => navigate(`/admin/staff/report/${staff._id}/`, { state: todaysClass})}>Report</button>
                     </td>):(<td>Report submitted</td>)}
                     </tr>
                   </tbody>

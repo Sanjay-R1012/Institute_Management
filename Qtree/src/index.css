@@ -4,6 +4,7 @@
 }
 .side-nav{
     width: 12vw;
+    min-width: 100px;
     height: 100vh;
     position: fixed;
     background-color:orange;
@@ -20,8 +21,8 @@
     
 }
 .logout{
-    margin-left: 10px;
-    margin-top: 30px;
+    margin-left: 20%;
+    margin-top: 80%;
     width: 50%;
     background-color: rgb(220, 67, 6);
     border: 5px;   
@@ -29,10 +30,11 @@
     color: #ffffff;
     cursor: pointer;
     font-weight: 400;
+    
 }
 
 .nav-link:hover {
-    background-color: orangered;
+    background-color: rgb(14, 84, 188);
     cursor: pointer;
 }
 
@@ -40,9 +42,14 @@
     text-decoration: none;
     color:#ffffff;
     display:block;
+    width: 90%;
+    justify-content: center;
+    align-items: center;
     height: 40px;
-    padding: 0px 20px;
-    line-height: 60px;
+    margin-top: 30px;
+    text-align: center;
+    overflow-wrap:anywhere;
+    border-radius: 5px;
 }
 
 .students-list {
@@ -219,4 +226,17 @@
     font-size: medium;
     color:rgb(32, 37, 45);
     padding-left: 30px;
+}
+
+.table-button {
+    background-color: rgb(205, 251, 255);
+    width: 100px;
+    margin-left: 5px;
+    border-radius: 5px;
+    font-weight: 400;
+    color: rgb(3, 86, 36);
+}
+
+.table-button:hover{
+    background-color: rgb(127, 242, 252);
 }

@@ -1,9 +1,10 @@
 import express from 'express'
 import { Student } from './studentModel.js'
+import { authentication } from '../Authentication/authentication.js'
 
 const StudentRouter =express.Router()
 
-StudentRouter.get('/data/',async(request,response) => {
+StudentRouter.get('/data/',authentication,async(request,response) => {
 
     const student_data = await Student.find({})
 

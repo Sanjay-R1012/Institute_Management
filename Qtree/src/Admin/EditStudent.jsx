@@ -25,31 +25,39 @@ const EditStudent = () => {
   const [staff, SetStaff] = useState(student_data.staff);
   const [staffslist, SetStafflist] = useState([]);
   const [courselist, SetCourselist] = useState([]);
-  const [batchlist, SetBatchlist] = useState([]);
 
   useEffect(() => {
-    axios
-      .get("http://127.0.0.1:3000/course/data/")
-      .then((response) => {
-        SetCourselist(response.data);
-        console.log(response.data);
-      })
-      .catch((error) => console.log(error));
+    const headers ={
+      'Content-Type':'Application/Json',
+      'Authorization':localStorage.getItem('Bearer')
+  }
 
-    axios
-      .get("http://127.0.0.1:3000/staff/data/")
-      .then((response) => {
-        SetStafflist(response.data);
-        console.log(response.data);
+  axios.get('http://127.0.0.1:3000/course/data/',{headers})
+      .then(response =>{ SetCourselist(response.data)
+          console.log(response.data)
       })
-      .catch((error) => console.log(error));
+      .catch(error => console.log(error))
 
-      axios.get('http://127.0.0.1:3000/batch/data/')
-        .then(response => { 
-            SetBatchlist(response.data)
-             console.log(response.data)
-        })
-        .catch(error => console.log(error))
+  axios.get('http://127.0.0.1:3000/staff/data/',{headers})
+  .then(response => { 
+      SetStafflist(response.data)
+       console.log(response.data)
+  })
+  .catch(error => console.log(error))
+
+  axios.get('http://127.0.0.1:3000/student/data/',{headers})
+  .then(response => { 
+      setStudentlist(response.data)
+       console.log(response.data)
+  })
+  .catch(error => console.log(error))
+
+  axios.get('http://127.0.0.1:3000/batch/data/',{headers})
+  .then(response => { 
+      setBatchlist(response.data)
+       console.log(response.data)
+  })
+  .catch(error => console.log(error))
   }, []);
 
   const update = () => {

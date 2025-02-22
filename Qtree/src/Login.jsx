@@ -26,7 +26,7 @@ const Login = () => {
         }
         fetchData()
 
-        setInterval(fetchData,30000)
+        setInterval(fetchData,3000)
     },[])
 
       
@@ -44,19 +44,13 @@ const Login = () => {
                 localStorage.setItem('Bearer',response.data.access_token)
                 localStorage.setItem('Refresh',response.data.refresh_token)
                 localStorage.setItem('email',email)
-            }
-            else{
-                alert(response.data.message)
-                localStorage.clear()
-            }
-            
 
-            axios.post('http://127.0.0.1:3000/auth/user/role/',user_data)
+                axios.post('http://127.0.0.1:3000/auth/user/role/',user_data)
                 .then(response =>{ localStorage.setItem("role",response.data)
-                    if(response.data == "staff"){
+                    if(response.data === "staff"){
                         navigate('/staff/timetable/')
                     }
-                    else if(response.data == "admin"){
+                    else if(response.data === "admin"){
                          navigate('/admin/students/')
                     }
                     else{
@@ -65,6 +59,12 @@ const Login = () => {
 
                 })
                 .catch(error => console.log(error))
+            }
+            else{
+                alert(response.data.message)
+                localStorage.clear()
+            }
+            
             console.log(response.data)
         })
         .catch(error => console.log(error))

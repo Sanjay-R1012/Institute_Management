@@ -1,8 +1,8 @@
 import React from 'react'
-import Navbar from '../Navbar'
 import axios from 'axios'
 import { useState,useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
+import Staffnavbar from '../Staffnavbar'
 
 const DailyClasses = () => {
 
@@ -15,34 +15,39 @@ const DailyClasses = () => {
   const[report,setReport]=useState([])
 
   useEffect(() =>{
-      axios.get('http://127.0.0.1:3000/course/data/')
+    const headers ={
+      'Content-Type':'Application/Json',
+      'Authorization':localStorage.getItem('Bearer')
+  }
+
+      axios.get('http://127.0.0.1:3000/course/data/',{headers})
           .then(response =>{ SetCourselist(response.data)
               console.log(response.data)
           })
           .catch(error => console.log(error))
 
-      axios.get('http://127.0.0.1:3000/staff/data/')
+      axios.get('http://127.0.0.1:3000/staff/data/',{headers})
       .then(response => { 
           SetStafflist(response.data)
            console.log(response.data)
       })
       .catch(error => console.log(error))
 
-      axios.get('http://127.0.0.1:3000/student/data/')
+      axios.get('http://127.0.0.1:3000/student/data/',{headers})
       .then(response => { 
           setStudentlist(response.data)
            console.log(response.data)
       })
       .catch(error => console.log(error))
 
-      axios.get('http://127.0.0.1:3000/batch/data/')
+      axios.get('http://127.0.0.1:3000/batch/data/',{headers})
       .then(response => { 
           setBatchlist(response.data)
            console.log(response.data)
       })
       .catch(error => console.log(error))
 
-      axios.get('http://127.0.0.1:3000/report/data/')
+      axios.get('http://127.0.0.1:3000/report/data/',{headers})
         .then(response => { 
             setReport(response.data)
              console.log(response.data)
@@ -50,10 +55,12 @@ const DailyClasses = () => {
         .catch(error => console.log(error))
   },[])
 
+  const filteresstaff = stafflist.find((s) => s.email === localStorage.getItem("email"))
   
   const filteredbatch = batchlist.filter(
-    (batch) => batch.staff === "67ad908dfed51cd3aa8ebd52"
+    (batch) => batch.staff === filteresstaff._id
   )
+
 
   const classdata = filteredbatch.map(batch => {
 
@@ -88,7 +95,7 @@ const DailyClasses = () => {
             <td>{batch.selectedtimerange}</td>
             <td>{st}</td>
             <td>{reportdata.length}</td>
-            <td><button onClick={() => navigate(`/admin/staff/report/data/${batch._id}/`, { state: report_list})}>report</button></td>
+            <td><button className='table-button' onClick={() => navigate(`/admin/staff/report/data/${batch._id}/`, { state: report_list})}>Report</button></td>
         </tr>
     )
 })
@@ -97,9 +104,9 @@ const DailyClasses = () => {
 
   return (
     <div>
-      <Navbar />
+      <Staffnavbar />
       <div className="students-list">
-        <table className="student-table">
+        {filteredbatch.length !== 0 ?(<table className="student-table">
           <thead>
             <tr>
               <th>Staff name</th>
@@ -115,7 +122,7 @@ const DailyClasses = () => {
           <tbody>
             {classdata}
           </tbody>
-        </table>
+        </table>):(<p>no batches assigned</p>)}
       </div>
     </div>
   );

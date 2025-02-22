@@ -14,27 +14,32 @@ const StudentsList = () => {
     const[batchlist,setBatchlist]=useState([])
 
     useEffect(() =>{
-        axios.get('http://127.0.0.1:3000/course/data/')
+        const headers ={
+            'Content-Type':'Application/Json',
+            'Authorization':localStorage.getItem('Bearer')
+        }
+
+        axios.get('http://127.0.0.1:3000/course/data/',{headers})
             .then(response =>{ SetCourselist(response.data)
                 console.log(response.data)
             })
             .catch(error => console.log(error))
 
-        axios.get('http://127.0.0.1:3000/staff/data/')
+        axios.get('http://127.0.0.1:3000/staff/data/',{headers})
         .then(response => { 
             SetStafflist(response.data)
              console.log(response.data)
         })
         .catch(error => console.log(error))
 
-        axios.get('http://127.0.0.1:3000/student/data/')
+        axios.get('http://127.0.0.1:3000/student/data/',{headers})
         .then(response => { 
             setStudentlist(response.data)
              console.log(response.data)
         })
         .catch(error => console.log(error))
 
-        axios.get('http://127.0.0.1:3000/batch/data/')
+        axios.get('http://127.0.0.1:3000/batch/data/',{headers})
         .then(response => { 
             setBatchlist(response.data)
              console.log(response.data)
@@ -67,7 +72,7 @@ const StudentsList = () => {
                 <td>{filteredbatch.length>0 ? filteredbatch[0].batchno : "not assigned"}</td>
                 <td>{Staff[0].staffname}</td>
                 <td>
-                    <button onClick={() => navigate(`/admin/students/edit/${student._id}/`, { state: student})}>Edit</button>
+                    <button className='table-button'  onClick={() => navigate(`/admin/students/edit/${student._id}/`, { state: student})}>Edit</button>
                 </td>
             </tr>
         )

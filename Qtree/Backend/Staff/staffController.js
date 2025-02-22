@@ -1,9 +1,10 @@
 import express from 'express'
 import { Staff } from './staffModel.js'
+import { authentication } from '../Authentication/authentication.js'
 
 const StaffRouter =express.Router()
 
-StaffRouter.get('/data/',async(request,response) => {
+StaffRouter.get('/data/',authentication,async(request,response) => {
 
     const staff_data = await Staff.find({})
 

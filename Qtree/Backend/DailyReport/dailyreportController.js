@@ -1,5 +1,6 @@
 import express from 'express'
 import { Report } from './dailyreportModel.js'
+import { authentication } from '../Authentication/authentication.js'
 
 const ReportRouter =express.Router()
 
@@ -10,7 +11,7 @@ ReportRouter.get('/data/',async(request,response) => {
     response.json(reoprt_data)
 })
 
-ReportRouter.post('/add/', async (request, response) => {
+ReportRouter.post('/add/',authentication,async (request, response) => {
 
     const new_reoprt = new Report(request.body)
 

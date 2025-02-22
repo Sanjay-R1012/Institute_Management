@@ -11,20 +11,25 @@ const Courses = () => {
     const[studentlist,setStudentlist]=useState([])
 
     useEffect(() =>{
-        axios.get('http://127.0.0.1:3000/course/data/')
+        const headers ={
+            'Content-Type':'Application/Json',
+            'Authorization':localStorage.getItem('Bearer')
+        }
+
+        axios.get('http://127.0.0.1:3000/course/data/',{headers})
             .then(response =>{ SetCourselist(response.data)
                 console.log(response.data)
             })
             .catch(error => console.log(error))
 
-        axios.get('http://127.0.0.1:3000/staff/data/')
+        axios.get('http://127.0.0.1:3000/staff/data/',{headers})
         .then(response => { 
             SetStafflist(response.data)
              console.log(response.data)
         })
         .catch(error => console.log(error))
 
-        axios.get('http://127.0.0.1:3000/student/data/')
+        axios.get('http://127.0.0.1:3000/student/data/',{headers})
         .then(response => { 
             setStudentlist(response.data)
              console.log(response.data)
@@ -48,7 +53,7 @@ const Courses = () => {
                 <td>{course.duration}</td>
                 <td>{Students.length}</td>
                 <td>
-                    <button onClick={() => navigate(`/admin/course/edit/${course._id}/`, { state: course})}>Edit</button>
+                    <button className='table-button' onClick={() => navigate(`/admin/course/edit/${course._id}/`, { state: course})}>Edit</button>
                 </td>
             </tr>
         )

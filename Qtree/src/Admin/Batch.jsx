@@ -15,34 +15,39 @@ const Batch = () => {
     const[reportlist,setReportlist]=useState([])
 
     useEffect(() =>{  
-        axios.get('http://127.0.0.1:3000/course/data/')
+      const headers ={
+        'Content-Type':'Application/Json',
+        'Authorization':localStorage.getItem('Bearer')
+    }
+
+        axios.get('http://127.0.0.1:3000/course/data/',{headers})
             .then(response =>{ SetCourselist(response.data)
                 console.log(response.data)
             })
             .catch(error => console.log(error))
 
-        axios.get('http://127.0.0.1:3000/staff/data/')
+        axios.get('http://127.0.0.1:3000/staff/data/',{headers})
         .then(response => { 
             SetStafflist(response.data)
              console.log(response.data)
         })
         .catch(error => console.log(error))
 
-        axios.get('http://127.0.0.1:3000/student/data/')
+        axios.get('http://127.0.0.1:3000/student/data/',{headers})
         .then(response => { 
             setStudentlist(response.data)
              console.log(response.data)
         })
         .catch(error => console.log(error))
 
-        axios.get('http://127.0.0.1:3000/batch/data/')
+        axios.get('http://127.0.0.1:3000/batch/data/',{headers})
         .then(response => { 
             setbatchlist(response.data)
              console.log(response.data)
         })
         .catch(error => console.log(error))
 
-        axios.get('http://127.0.0.1:3000/report/data/')
+        axios.get('http://127.0.0.1:3000/report/data/',{headers})
         .then(response => { 
             setReportlist(response.data)
              console.log(response.data)
@@ -59,8 +64,7 @@ const Batch = () => {
     const unfinishedbatch = () =>{ setFilteredbatch(batchlist.filter((batch) => batch.finished === false))}
 
     const batchdata = filteredbatch.map(batch => {
-  
-    
+      
 
       const Staffs = stafflist.filter(
           (staff) => staff._id === batch.staff
@@ -94,8 +98,8 @@ const Batch = () => {
               <td>{batch.selectedtimerange}</td>
               <td>{batch.classtype}</td>
               <td>{report.length}</td>
-              <td><button>view</button></td>
-              <td><button type="submit" onClick={() =>finished(batch._id)}>finished</button></td>
+              <td><button className='table-button'>view</button></td>
+              <td><button className="btn btn-danger" type="submit" onClick={() =>finished(batch._id)}>finished</button></td>
           </tr>
       )
   })
@@ -105,9 +109,9 @@ const Batch = () => {
     <div>
       <Navbar />
       <div className="students-list">
-        <button className="btn" onClick={() => navigate("/admin/batch/create/")}>Create Batch</button>
-        <button className="btn" onClick={finishedbatch}>finished Batch</button>
-        <button className="btn" onClick={unfinishedbatch}>unfinished Batch</button>
+        <button className="btn btn-primary" onClick={() => navigate("/admin/batch/create/")}>Create Batch</button>
+        <button className="btn btn-primary" onClick={finishedbatch}>finished Batch</button>
+        <button className="btn btn-primary" onClick={unfinishedbatch}>unfinished Batch</button>
         <table className="student-table">
           <thead>
             <tr>

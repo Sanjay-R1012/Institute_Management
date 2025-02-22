@@ -1,9 +1,10 @@
 import express from 'express'
 import { Batch } from './batchModel.js'
+import { authentication } from '../Authentication/authentication.js'
 
 const BatchRouter =express.Router()
 
-BatchRouter.get('/data/',async(request,response) => {
+BatchRouter.get('/data/',authentication,async(request,response) => {
 
     const batch_data = await Batch.find({})
 

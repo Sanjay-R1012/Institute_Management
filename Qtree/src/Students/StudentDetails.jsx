@@ -14,34 +14,39 @@ const StudentDetails = () => {
   const[reportlist,setReportlist]=useState([])
 
   useEffect(() =>{
-      axios.get('http://127.0.0.1:3000/course/data/')
+    const headers ={
+      'Content-Type':'Application/Json',
+      'Authorization':localStorage.getItem('Bearer')
+  }
+
+      axios.get('http://127.0.0.1:3000/course/data/',{headers})
           .then(response =>{ SetCourselist(response.data)
               console.log(response.data)
           })
           .catch(error => console.log(error))
 
-      axios.get('http://127.0.0.1:3000/staff/data/')
+      axios.get('http://127.0.0.1:3000/staff/data/',{headers})
       .then(response => { 
           SetStafflist(response.data)
            console.log(response.data)
       })
       .catch(error => console.log(error))
 
-      axios.get('http://127.0.0.1:3000/student/data/')
+      axios.get('http://127.0.0.1:3000/student/data/',{headers})
       .then(response => { 
           setStudentlist(response.data)
            console.log(response.data)
       })
       .catch(error => console.log(error))
 
-      axios.get('http://127.0.0.1:3000/batch/data/')
+      axios.get('http://127.0.0.1:3000/batch/data/',{headers})
       .then(response => { 
           setBatchlist(response.data)
            console.log(response.data)
       })
       .catch(error => console.log(error))
 
-      axios.get('http://127.0.0.1:3000/report/data/')
+      axios.get('http://127.0.0.1:3000/report/data/',{headers})
         .then(response => { 
             setReportlist(response.data)
              console.log(response.data)
@@ -51,10 +56,10 @@ const StudentDetails = () => {
 
   const studentdata = () =>{
    if(studentlist.length != 0){
-    const student = studentlist.find((st) => st._id == '67aee2ef1a224623c73c9b1d')
+    const student = studentlist.find((st) => st.email == localStorage.getItem("email"))
     console.log(student)
 
-    const batch = batchlist.find((b) => b.selectedstudents.includes('67aee2ef1a224623c73c9b1d'))
+    const batch = batchlist.find((b) => b.selectedstudents.includes(student._id))
     console.log(batch)
 
     const staff = stafflist.find((s) => s._id == student.staff)
@@ -90,6 +95,9 @@ const StudentDetails = () => {
   })
 
     return <div>
+      <div className="d-grid gap-2 d-md-flex justify-content-md-end">
+      <button className='btn btn-danger me-md-2' type='button' onClick={() => {localStorage.clear(),navigate("/") }}>Log out</button> 
+      </div>
       <h2>Student Information</h2>
       <div className='student-data-group'>
       <p><strong>Student Name:</strong> {student.studentname}</p>

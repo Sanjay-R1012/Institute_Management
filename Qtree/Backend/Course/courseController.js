@@ -1,9 +1,10 @@
 import express from 'express'
 import { Course } from './courseModel.js'
+import { authentication } from '../Authentication/authentication.js'
 
 const CourseRouter =express.Router()
 
-CourseRouter.get('/data/',async(request,response) => {
+CourseRouter.get('/data/',authentication,async(request,response) => {
 
     const course_data = await Course.find({})
 

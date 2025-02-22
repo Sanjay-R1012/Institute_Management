@@ -2,7 +2,6 @@ import { Routes, Route} from 'react-router-dom'
 import StudentsList from './Admin/StudentsList'
 import Courses from './Admin/Courses'
 import StaffsList from './Admin/StaffsList'
-import AccessRequsts from './Admin/AccessRequsts'
 import DailyClasses from './Staff/DailyClasses'
 import StudentDetails from './Students/StudentDetails'
 import AddStudent from './Admin/AddStudent'
@@ -38,8 +37,6 @@ function App() {
           <Route path={'/admin/batch/'} element={<Batch />}/>
           <Route path={'/admin/batch/create/'} element={<CreateBatch />}/>
 
-          <Route path={'/admin/request/'} element={<AccessRequsts />}/>
-
           <Route path={'/staff/classes/'} element={<DailyClasses />}/>
 
           <Route path={'/student/data/'} element={<StudentDetails />}/>
@@ -49,7 +46,7 @@ function App() {
           <Route path={'/admin/staff/report/data/:id/'} element={<Reportlist />}/>
 
 
-          <Route path={'/login/'} element={<Login />}/>
+          <Route path={'/'} element={<Login />}/>
       </Routes>
     </div>
   )

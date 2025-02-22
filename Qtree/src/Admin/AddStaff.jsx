@@ -16,7 +16,12 @@ const AddStaff = () => {
     const [classtype,setClasstype]=useState('')
 
     useEffect(() => {
-      axios.get('http://127.0.0.1:3000/course/data/')
+      const headers ={
+        'Content-Type':'Application/Json',
+        'Authorization':localStorage.getItem('Bearer')
+    }
+
+      axios.get('http://127.0.0.1:3000/course/data/',{headers})
       .then(response => { 
         setCourses(response.data)
         console.log(response.data)

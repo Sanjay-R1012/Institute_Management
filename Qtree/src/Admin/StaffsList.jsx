@@ -76,7 +76,7 @@ const StaffsList = () => {
                 <th>Course</th>
                 <th>Joined Date </th>
                 <th>students count</th>
-                <th>More Data</th>
+                <th>Edit</th>
             </tr>
             </thead>
             <tbody>

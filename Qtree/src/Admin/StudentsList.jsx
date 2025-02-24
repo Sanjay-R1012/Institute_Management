@@ -93,7 +93,7 @@ const StudentsList = () => {
                 <th>Enrolled Date</th>
                 <th>batch No</th>
                 <th>staff</th>
-                <th>More Data</th>
+                <th>Edit</th>
             </tr>
             </thead>
             <tbody>

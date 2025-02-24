@@ -24,6 +24,15 @@ const Reportlist = () => {
     const studentdata = report_data.students
     console.log(studentdata,"studentdata")
 
+    const back =() => {
+        if(report_data.role === "staff"){
+            navigate('/staff/classes/')
+        }
+        else{
+            navigate('/admin/batch/')
+        }
+    }
+
     const dailyreport =reportdata.map((report,index) => {
         const studentname = studentdata.map((student,index) => {
             return <tr key={index}>
@@ -53,7 +62,7 @@ const Reportlist = () => {
   return (
     <div >
         <div className="d-grid gap-2 d-md-flex justify-content-md-end">
-        <button className="btn btn-primary me-md-2" type="button" onClick={() => navigate('/staff/classes/')}>back</button>
+        <button className="btn btn-primary me-md-2" type="button" onClick={back}>back</button>
         </div>
         {dailyreport}
     </div>

@@ -109,7 +109,8 @@ const StudentDetails = () => {
       <p><strong>Class Time:</strong> {batch ? batch.selectedtimerange : "Class time not found"}</p>
       <p><strong>Classes Finished:</strong> {report.length}</p>
       </div>
-      {dailyreport}
+      {dailyreport.length !==0 ? dailyreport :<h1>no Reports yet</h1>}
+      {console.log(dailyreport,"dailyreport")}
     </div>
   }
   }

@@ -60,16 +60,15 @@ const TimeTable = () => {
         return today.toISOString().split("T")[0];
       };
     
-      // Check if today is a weekend
       const isWeekend = () => {
         const today = new Date();
-        return today.getDay() === 0 || today.getDay() === 6; // Sunday = 0, Saturday = 6
+        return today.getDay() === 0 || today.getDay() === 6; 
       };
     
-      // Function to generate today's timetable for a staff member
+
       const generateTodaysTimetable = (staff) => {
         if (isWeekend()) {
-          return null; // No classes on weekends
+          return null;
         }
 
         const filtered_report =report.filter((rep) => rep.date === getCurrentDate())
@@ -125,6 +124,7 @@ const TimeTable = () => {
       };
 
       const loginstaff = stafflist.filter((s) => s.email == localStorage.getItem("email"))
+      console.log(loginstaff,"login staff")
 
   return (
     <div>
@@ -161,7 +161,7 @@ const TimeTable = () => {
                       <td>{todaysClass.time_range}</td>
                       {todaysClass.report !=="submitted" ? (
                       <td>
-                    <button className='table-button' onClick={() => navigate(`/admin/staff/report/${staff._id}/`, { state: todaysClass})}>Report</button>
+                    <button className='table-button' type='submit' onClick={() => navigate(`/admin/staff/report/${staff._id}/`, { state: todaysClass})}>Report</button>
                     </td>):(<td>Report submitted</td>)}
                     </tr>
                   </tbody>

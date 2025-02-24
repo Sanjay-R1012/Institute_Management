@@ -11,7 +11,7 @@ ReportRouter.get('/data/',async(request,response) => {
     response.json(reoprt_data)
 })
 
-ReportRouter.post('/add/',authentication,async (request, response) => {
+ReportRouter.post('/add/',async (request, response) => {
 
     const new_reoprt = new Report(request.body)
 

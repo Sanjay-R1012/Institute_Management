@@ -71,7 +71,7 @@ const Courses = () => {
             <th>Staffs</th>
             <th>Course Duration</th>
             <th>Enrolled Students</th>
-            <th>more Data</th>
+            <th>Edit</th>
         </tr>
         </thead>
         <tbody>

@@ -12,6 +12,7 @@ const DailyClasses = () => {
   const[stafflist,SetStafflist]=useState([])
   const[studentlist,setStudentlist]=useState([])
   const[batchlist,setBatchlist]=useState([])
+  const[filteredbatchlist,setFilteredbatchlist]=useState([])
   const[report,setReport]=useState([])
 
   useEffect(() =>{
@@ -55,14 +56,23 @@ const DailyClasses = () => {
         .catch(error => console.log(error))
   },[])
 
+  useEffect(() => {setFilteredbatchlist(batchlist.filter((batch) => batch.finished === false))},[batchlist])
+
+  const finishedbatch =() => {
+    setFilteredbatchlist(batchlist.filter((batch) => batch.finished === true))
+  }
+
+  const unfinishedbatch = () =>{ setFilteredbatchlist(batchlist.filter((batch) => batch.finished === false))}
+
   const filteresstaff = stafflist.find((s) => s.email === localStorage.getItem("email"))
+  console.log(filteresstaff,"filteresstaff")
   
-  const filteredbatch = batchlist.filter(
+  const filteredbatch_staff = filteredbatchlist.filter(
     (batch) => batch.staff === filteresstaff._id
   )
 
 
-  const classdata = filteredbatch.map(batch => {
+  const classdata = filteredbatch_staff.map(batch => {
 
     const staff =stafflist.filter((staff) => staff._id === batch.staff)
     const course =courselist.filter((course) => course._id === batch.coursename)
@@ -83,6 +93,7 @@ const DailyClasses = () => {
     "batch":batch,
     "reportdata":reportdata,
     "students":selectedStudents,
+    "role":"staff"
   }
     
 
@@ -95,7 +106,7 @@ const DailyClasses = () => {
             <td>{batch.selectedtimerange}</td>
             <td>{st}</td>
             <td>{reportdata.length}</td>
-            <td><button className='table-button' onClick={() => navigate(`/admin/staff/report/data/${batch._id}/`, { state: report_list})}>Report</button></td>
+            <td><button className='table-button' type='submit' onClick={() => navigate(`/admin/staff/report/data/${batch._id}/`, { state: report_list})}>Report</button></td>
         </tr>
     )
 })
@@ -106,7 +117,11 @@ const DailyClasses = () => {
     <div>
       <Staffnavbar />
       <div className="students-list">
-        {filteredbatch.length !== 0 ?(<table className="student-table">
+      <div class="btn-group" role="group" aria-label="Basic mixed styles example">
+      <button className="btn btn-light" type='submit' onClick={finishedbatch}>finished Batch</button>
+      <button className="btn btn-info" type='submit' onClick={unfinishedbatch}>unfinished Batch</button>
+      </div>
+        {classdata.length !== 0 ?(<table className="student-table">
           <thead>
             <tr>
               <th>Staff name</th>

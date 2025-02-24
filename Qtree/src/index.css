@@ -108,6 +108,8 @@
 
 .student-table tbody tr:hover td{
     color: #000000;
+    background-color: rgb(199, 211, 240);
+    font-weight: 400;
 }
 
 .box {
@@ -192,11 +194,12 @@
 .btn {
     margin-right: 0;
     margin-top: 10px;
-    height: 30px;
+    height: 40px;
+    border: aquamarine;
     background-color: aquamarine;
     font-weight: bold;
     width: 10vw;
-    border-radius: 5px;
+    border-radius: 7px;
 }
 
 .para-input{

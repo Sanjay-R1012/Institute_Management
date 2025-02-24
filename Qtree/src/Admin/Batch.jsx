@@ -88,6 +88,22 @@ const Batch = () => {
           .catch((error) => console.log(error));
       }
 
+      const selectedStudentIds = batch.selectedstudents;
+
+      const selectedStudents = studentlist.filter(student => 
+        selectedStudentIds.includes(student._id)
+    )
+      console.log("students",selectedStudents)
+
+      const reportdata =reportlist.filter((rep) => rep.batch == batch._id)
+
+        const report_list = {
+          "batch":batch,
+          "reportdata":reportdata,
+          "students":selectedStudents,
+          "role":"admin"
+        }
+
       return(
           <tr key={batch._id}>
               <td>{batch.batchno}</td>
@@ -98,7 +114,7 @@ const Batch = () => {
               <td>{batch.selectedtimerange}</td>
               <td>{batch.classtype}</td>
               <td>{report.length}</td>
-              <td><button className='table-button'>view</button></td>
+              <td><button className='table-button' type='submit' onClick={() => navigate(`/admin/staff/report/data/${batch._id}/`, { state: report_list})}>view</button></td>
               <td><button className="btn btn-danger" type="submit" onClick={() =>finished(batch._id)}>finished</button></td>
           </tr>
       )
@@ -109,9 +125,11 @@ const Batch = () => {
     <div>
       <Navbar />
       <div className="students-list">
-        <button className="btn btn-primary" onClick={() => navigate("/admin/batch/create/")}>Create Batch</button>
-        <button className="btn btn-primary" onClick={finishedbatch}>finished Batch</button>
-        <button className="btn btn-primary" onClick={unfinishedbatch}>unfinished Batch</button>
+      <div class="btn-group" role="group" aria-label="Basic mixed styles example">
+        <button type="button" class="btn btn-warning" onClick={() => navigate("/admin/batch/create/")}>Create Batch</button>
+        <button type="button" class="btn btn-light" onClick={finishedbatch}>finished Batch</button>
+        <button type="button" class="btn btn-info" onClick={unfinishedbatch}>unfinished Batch</button>
+      </div>
         <table className="student-table">
           <thead>
             <tr>
@@ -124,7 +142,7 @@ const Batch = () => {
               <th>Class type</th>
               <th>Classes Finished</th>
               <th>more Data</th>
-              <th>batch finished</th>
+              <th>finish Batch</th>
             </tr>
           </thead>
           <tbody>

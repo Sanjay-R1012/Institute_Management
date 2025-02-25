@@ -86,6 +86,8 @@ const Batch = () => {
           axios.patch(`http://127.0.0.1:3000/batch/update/${id}/`, finished_batch)
           .then((response) => console.log(response))
           .catch((error) => console.log(error));
+
+          unfinishedbatch()
       }
 
       const selectedStudentIds = batch.selectedstudents;

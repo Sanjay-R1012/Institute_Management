@@ -87,7 +87,7 @@ const Batch = () => {
           .then((response) => console.log(response))
           .catch((error) => console.log(error));
 
-          unfinishedbatch()
+          window.location.reload()
       }
 
       const selectedStudentIds = batch.selectedstudents;

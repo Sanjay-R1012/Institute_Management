@@ -64,7 +64,7 @@ AuthRouter.post('/login/', async (request, response) => {
                 email:request.body.email
             }
 
-            const access_token =jwt.sign(User,process.env.ACCESS_KEY,{expiresIn:'30s'})
+            const access_token =jwt.sign(User,process.env.ACCESS_KEY)
 
             const refresh_token =jwt.sign(User,process.env.REFRESH_KEY)
 
@@ -121,7 +121,7 @@ AuthRouter.post('/token/', async (request, response) => {
             return response.status(403).json('Token Verifivation Failed')
         }
 
-        const access_token = jwt.sign({email:user.email},process.env.ACCESS_KEY,{expiresIn:'30s'})
+        const access_token = jwt.sign({email:user.email},process.env.ACCESS_KEY)
 
         response.json({
             access_token:access_token
